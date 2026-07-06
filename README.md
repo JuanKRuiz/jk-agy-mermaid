@@ -24,7 +24,7 @@ sequenceDiagram
     User->>Agent: "Create a network architecture diagram"
     Agent->>Healer: [Draft Code] "Validate and enrich"
     Note over Healer: Dynamically checks syntax and<br/>resolves official brand icons (GCP/AWS/Azure)
-    Healer-->>Agent: [Polished Code] 100% Valid & Styled
+    Healer-->>Agent: [Polished Code] 100% Valid and Styled
     Agent->>User: 🧜‍♂️ Beautiful, high-contrast visual diagram!
 ```
 
