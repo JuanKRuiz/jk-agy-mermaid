@@ -1,8 +1,9 @@
 # 🧜‍♂️ jk-agy-mermaid
 
 [![GitHub Release](https://img.shields.io/github/v/release/JuanKRuiz/jk-agy-mermaid?style=flat-square&color=4285F4)](https://github.com/JuanKRuiz/jk-agy-mermaid)
-[![License](https://img.shields.io/github/license/JuanKRuiz/jk-agy-mermaid?style=flat-square&color=34A853)](LICENSE)
-[![Antigravity Compatible](https://img.shields.io/badge/Antigravity-v2.0%20Ready-FBBC04?style=flat-square)](https://antigravity.google)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-34A853?style=flat-square)](LICENSE)
+[![Antigravity Compatible](https://img.shields.io/badge/Antigravity-v2.0_Ready-FBBC04?style=flat-square)](https://antigravity.google)
+[![Antigravity CLI (agy) Compatible](https://img.shields.io/badge/agy_CLI-v2.0_Ready-EA4335?style=flat-square)](https://antigravity.google)
 
 > 🎨 **The ultimate industrial-grade Mermaid.js designer, auditor, and hot-patcher for agentic AI workflows.**
 
@@ -123,7 +124,7 @@ flowchart TD
 
 💡 *Note: Because GitHub's native Markdown viewer does not support custom icon loading (`@{ icon: "..." }`), here is how the diagram renders inside an Antigravity or standard Mermaid-supported editor/viewer:*
 
-<img src="img/img-readme-1.webp" alt="Rendered Diagram Preview" width="50%" />
+<img src="img/img-readme-1.webp" alt="Rendered Diagram Preview" width="30%" />
 
 ---
 
