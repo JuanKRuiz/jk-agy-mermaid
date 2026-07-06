@@ -13,7 +13,7 @@ sequenceDiagram
     autonumber
     actor User as User
     participant Learner as mermaid-learner Agent
-    participant Config as special-icon-cases.md
+    participant DB as SQLite DB (icons_cache.db)
     participant TargetMMD as Diagram in Development (.mmd)
 
     User->>Learner: "The logos:weaviate icon shows as '?' or has coloring issues"
@@ -26,16 +26,15 @@ sequenceDiagram
     alt Scenario A: Non-existent icon (Code ?)
         note over Learner: Step 2: Indexed Search for Substitute
         Learner->>Learner: Execute query on SQLite DB (grep_search)
-        Learner->>Config: Record obsolete icon in section 3 (Blacklist) with reason and substitute
+        Learner->>DB: Run update_icon.py --blacklist <icon_code> 1
         Learner->>TargetMMD: Hot-patch the .mmd replacing the obsolete icon
     else Scenario B: Coloring interference (Black / Opaque Box)
-        Learner->>Config: Record icon code in section 1 (Zero-Style Exceptions)
+        Learner->>DB: Run update_icon.py --style-compatible <icon_code> 0
         Learner->>TargetMMD: Hot-patch the .mmd removing the color class
     end
 
-    note over Learner: Step 5: Report Generation & Re-indexing
-    Learner->>Learner: Recompile SQLite database to apply changes in microseconds
-    Learner->>User: Present learning report, updated special-icon-cases.md, and .mmd change diff
+    note over Learner: Step 5: Report Generation
+    Learner->>User: Present learning report, database update confirmation, and .mmd change diff
 ```
 
 ---
@@ -50,17 +49,18 @@ Analyze the reported symptom to classify the error into one of these two categor
 ### Step 2: Finding a Viable Alternative (For Type A)
 Using exclusively the authorized native command tool `python3 [path/to/]skills/mermaid-designer/scripts/query_icons.py --batch "<term>"` or `grep_search` over local databases, the agent must perform queries for similar keywords (e.g., if Weaviate fails, search for "vector database" or "pinecone"). **It is strictly forbidden** to run manual SQLite SQL queries with `python3 -c "import sqlite3; ..."` from the terminal, or to use unsupported/help flags.
 
-### Step 3: Updating Plugin Knowledge Assets
-The agent must perform hot modifications on the unified configuration file:
-*   **Type A:** Add the disapproval entry under section "**3. Exclusion List (Blacklist)**" of `skills/mermaid-designer/resources/special-icon-cases.md` detailing the reason and suggested alternative.
-*   **Type B:** Add the icon identifier or exact pattern under section "**1. Icons with Vector Problems (Zero-Style Rule)**" of `skills/mermaid-designer/resources/special-icon-cases.md`, permanently forbidding any association with background color styles.
+### Step 3: Updating Plugin Knowledge Assets (SQLite Cache)
+The agent must execute the database updater CLI to set appropriate status flags:
+*   **Type A:** Run the update CLI to blacklist the deprecated/missing icon code:
+    `python3 [path/to/]skills/mermaid-designer/scripts/update_icon.py --blacklist <icon_code> 1`
+*   **Type B:** Run the update CLI to set the style compatibility of the icon to 0:
+    `python3 [path/to/]skills/mermaid-designer/scripts/update_icon.py --style-compatible <icon_code> 0`
 
 ### Step 4: Hot-Patching the Diagram (.mmd)
 The agent opens the affected `.mmd` file and applies the exact corrective measure (replaces the icon with the substitute, or removes the background color class from the node).
 
-### Step 5: Re-Indexing and Professional Report
-*   Execute `python3 [path/to/]skills/mermaid-designer/scripts/index_icons.py` (if applicable) or query tools to ensure SQLite database reflects changes.
-*   Present a confirmation to the user detailing:
-    1.  Which knowledge assets were updated (`skills/mermaid-designer/resources/special-icon-cases.md`).
-    2.  Why this technical decision was made.
-    3.  A **Git Diff** block showing exactly the changes made to the source diagram `.mmd` file.
+### Step 5: Professional Report
+Present a confirmation to the user detailing:
+1.  The executed SQL update parameters via `update_icon.py` on `icons_cache.db`.
+2.  Why this technical decision was made.
+3.  A **Git Diff** block showing exactly the changes made to the source diagram `.mmd` file.

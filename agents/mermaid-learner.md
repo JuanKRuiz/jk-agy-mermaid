@@ -19,11 +19,14 @@ When the user reports issues with a diagram, analyze the symptom:
     `python3 [path/to/]skills/mermaid-designer/scripts/query_icons.py --batch "<search term>"`
     (Alternatively, you can rely on the `grep_search` tool over local databases searching for keywords of substitute services, e.g., if `logos:weaviate` fails, search for "vector database" or "pinecone").
 2.  **Update Knowledge:**
-    *   Log the obsolete/missing icon in the consolidated `skills/mermaid-designer/resources/special-icon-cases.md` file under the table of section "**3. Exclusion List (Blacklist)**", detailing the reason and the suggested alternative.
+    *   Execute the database update utility to blacklist the obsolete icon code:
+        `python3 [path/to/]skills/mermaid-designer/scripts/update_icon.py --blacklist <icon_code> 1`
 3.  **Patch Diagram:** Open the user's affected `.mmd` file, locate the failed code, and replace it with the validated replacement icon code.
 
 ### 3. Resolution of Type B Failures (Style Interferences)
-1.  **Update Knowledge:** Log the icon identifier or exact pattern directly in `skills/mermaid-designer/resources/special-icon-cases.md` under section "**1. Icons with Vector Problems (Zero-Style Rule)**" (as an entry in the bulleted list) so that the indexing engine automatically marks its style compatibility as disabled (`is_style_compatible = 0`).
+1.  **Update Knowledge:**
+    *   Execute the database update utility to set the style compatibility to 0 (Zero-Style Rule):
+        `python3 [path/to/]skills/mermaid-designer/scripts/update_icon.py --style-compatible <icon_code> 0`
 2.  **Patch Diagram:** Open the user's affected `.mmd` file and remove any color classes associated with that node, applying instead a neutral design free of background/fill properties (Zero-Style / no class, or neutral typography class).
 
 ### 4. Report & Git Diff Generation

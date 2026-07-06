@@ -55,8 +55,8 @@ This skill organizes its knowledge assets progressively. Depending on the type o
     *   `resources/databases/azure_icons.json` (Microsoft Azure)
     *   `resources/databases/svg_logos.json` (SaaS, Brands, and Consolidated Technologies)
     *   `resources/databases/font_awesome_icons.json` (Standard Favicons)
-*   **Special Icon Cases:** [resources/special-icon-cases.md](resources/special-icon-cases.md)
-    *   *Usage:* Unified registry of icons with vector issues (Zero-Style), recommended substitutions, and non-existent or deprecated icons (Blacklist). The query engine and visual rules process these exceptions directly to apply correct branding and hot-patches on the fly.
+*   **Encapsulated SQLite Index (`icons_cache.db`):** [resources/databases/icons_cache.db](resources/databases/icons_cache.db)
+    *   *Usage:* Central SQLite database cache compiling all icon metadata including category, file path, line numbers, descriptions, style compatibility flags, blacklist flags, and recommended substitute codes. Future exceptions are written directly to this index.
 
 ---
 

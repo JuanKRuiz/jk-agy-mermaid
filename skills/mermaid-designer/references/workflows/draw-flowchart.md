@@ -45,7 +45,7 @@ To equip the diagram with industrial-grade brand presence, search for official i
 *   **Execution (Mandatory Batching):** Extract the list of all required node concepts and make **a single batch call** to the search engine using the `--batch` flag (it is strictly forbidden to execute manual SQL queries with `python3 -c "import sqlite3; ..."` from the terminal, or to use help or incomplete commands):
     `python3 [path/to/]skills/mermaid-designer/scripts/query_icons.py --batch "load balancer" "lambda" "database"`
     This will instantly return a JSON map mapping each concept to its best icon, including metadata like `is_style_compatible` and `substitute_code`.
-*   **Automatic Filtering:** The SQLite search engine automatically excludes icons listed in the blacklist of `skills/mermaid-designer/resources/special-icon-cases.md`.
+*   **Automatic Filtering:** The SQLite search engine automatically filters out icons marked as blacklisted (`is_blacklisted = 1`) inside the `icons_cache.db` index.
 *   **Database Attribute Support:** Use the `--code <code_string>` parameter in `query_icons.py` to verify style compatibility or special icon notes directly from the database.
 
 ---

@@ -186,10 +186,10 @@ The `mermaid-learner` agent governs permanent visual immunity under the followin
                                 │
                                 ▼
              Steps 2 and 3: Knowledge Asset Update
-             ├── Type A: Search for alternatives in DB. Register in Blacklist
-             │           inside "special-icon-cases.md" indicating replacement.
-             └── Type B: Add identifier or pattern to the Zero-Style exclusion
-                         list in "special-icon-cases.md".
+             ├── Type A: Search DB alternatives. Update status via
+             │           update_icon.py --blacklist <code> 1.
+             └── Type B: Disable style compatibility via
+                         update_icon.py --style-compatible <code> 0.
                                 │
                                 ▼
              Step 4: Hot-Patching of the Diagram (.mmd)
@@ -198,8 +198,8 @@ The `mermaid-learner` agent governs permanent visual immunity under the followin
                                 │
                                 ▼
              Step 5: Professional Reporting
-             └── Present report to the user with the updated local cases
-                 file and the exact Git Diff of applied changes.
+             └── Present report to the user confirming database updates and 
+                 providing the exact Git Diff of applied diagram changes.
 ```
 
 ---

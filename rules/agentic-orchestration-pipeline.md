@@ -57,7 +57,7 @@ flowchart TD
 3.  **`mermaid-auditor` (Aesthetic Warden):**
     *   *Responsibility:* Enforces visual standards. Verifies high-contrast node labels (`color:#000`), YAML frontmatter configuration, ELK layouts, subgraph color zones, and strictly enforces the **"Zero-Style" rule** (preventing styling classes on AWS, Azure, Logos, or GCP exceptions like `gcp:cloud-load-balancing`).
 4.  **`mermaid-learner` (Immune Loop Manager):**
-    *   *Responsibility:* Intercepts user-reported rendering or coloring glitches. Classifies failures, logs exceptions permanently to `skills/mermaid-designer/resources/special-icon-cases.md`, hot-patches active diagrams, and triggers SQLite re-indexing.
+    *   *Responsibility:* Intercepts user-reported rendering or coloring glitches. Classifies failures, updates icon status flags directly in `icons_cache.db` via the CLI tool `update_icon.py`, hot-patches active diagrams, and provides detailed learning reports.
 
 ---
 
@@ -147,11 +147,11 @@ Whenever a rendering glitch (missing icon or visual overlap/interference) is rep
 
 1.  **Glitch Classification:** The Main Agent captures the failure and invokes `mermaid-learner` to analyze the symptom.
 2.  **Type-Specific Resolution:**
-    *   **Missing Icon:** The learner searches for a validated fallback or similar brand concept, logs the deprecated code in the Blacklist section of `skills/mermaid-designer/resources/special-icon-cases.md`, and substitutes it in the diagram.
-    *   **Coloring Glitch:** The learner logs the offending icon in the Zero-Style Exception section of `skills/mermaid-designer/resources/special-icon-cases.md`, and strips the style class from the node in the diagram.
-3.  **System Re-indexing:**
-    *   The learner or a script compiles the updated list into the SQLite central cache (`icons_cache.db`), updating the `is_style_compatible` or `is_blacklisted` statuses in microseconds to protect all future diagram generations.
-4.  **Diff Report:** The final output displays the learning log, the updated resource paths, and a precise git `diff` of the corrected diagram.
+    *   **Missing Icon:** The learner searches for a validated fallback or similar brand concept, blacklists the deprecated code in the database via `python3 [path/to/]skills/mermaid-designer/scripts/update_icon.py --blacklist <icon_code> 1`, and substitutes it in the diagram.
+    *   **Coloring Glitch:** The learner sets the offending icon as style-incompatible in the database via `python3 [path/to/]skills/mermaid-designer/scripts/update_icon.py --style-compatible <icon_code> 0`, and strips the style class from the node in the diagram.
+3.  **Real-Time Protection:**
+    *   By updating the centralized SQLite index (`icons_cache.db`) instantly, future diagram drafting processes automatically filter out the blacklisted icon or apply the Zero-Style rule to the style-incompatible icon in microseconds.
+4.  **Diff Report:** The final output displays the learning log, the modified database attributes, and a precise git `diff` of the corrected diagram.
 
 ---
 
