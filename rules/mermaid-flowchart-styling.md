@@ -153,4 +153,15 @@ Subgraph colorization is not a decorative element; it represents the operational
     4.  **Forbidden / Default Yellow:**
         *   *Action:* Any subgraph that ends up with the default yellow background must be re-styled immediately to one of the options above. No subgraph without explicit styling will be tolerated.
 
+---
+
+## 7. Strict Limitation to Database-Supported Icons (MANDATORY)
+
+To ensure consistency, portability, and reliable rendering within the offline execution limits of the Antigravity system, a strict rule for brand and typography icons is established:
+
+*   **DATABASE ONLY REQUIREMENT:** It is **strictly prohibited** to use any icon (whether it is Font Awesome `fa:*`, Cloud `gcp:*`/`aws:*`/`azure:*`, or logo `logos:*`) that does not physically exist in the pre-populated SQLite database index (`icons_cache.db`).
+*   **REJECTION OF EXTERNAL OR DEPRECATED ICONS:** Any diagram utilizing an icon not present in the database violates compliance and **must be rejected** by the auditor.
+*   **VERIFICATION PROCESS:** Before applying any icon, the agent or script must query the code via `query_icons.py --code <icon_code>` or search terms via `query_icons.py --batch "<term>"` to verify its existence and fetch its compliance attributes (e.g., `is_style_compatible` or `is_blacklisted`).
+
+
 

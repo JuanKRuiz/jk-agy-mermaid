@@ -27,17 +27,17 @@ themeVariables:
 flowchart TD
     subgraph Matrix ["Antigravity Mermaid Agent Matrix"]
         direction TB
-        Main["`**Main Agent (Orchestrator)**`"]:::gcpBlue
-        Main@{ icon: "fa:robot" }
+        Main["`**Main Agent (Orchestrator)**`"]
+        Main@{ icon: "gcp:advanced-agent-modeling" }
         
         Linter["`**mermaid-linter-fixer**<br>Syntactic Guardian`"]:::gcpGreen
-        Linter@{ icon: "fa:stethoscope" }
+        Linter@{ icon: "fa:circle-check" }
         
         Auditor["`**mermaid-auditor**<br>Aesthetic Warden`"]:::gcpYellow
-        Auditor@{ icon: "fa:magnifying-glass" }
+        Auditor@{ icon: "fa:eye" }
         
         Learner["`**mermaid-learner**<br>Immune Loop Manager`"]:::gcpRed
-        Learner@{ icon: "fa:graduation-cap" }
+        Learner@{ icon: "fa:lightbulb" }
         
         Main --> Linter
         Main --> Auditor
@@ -90,14 +90,14 @@ flowchart TD
     User["`**1. User Prompt**`"]:::neutral
     User@{ icon: "fa:user" }
     
-    Draft["`**2. Draft Code**<br>Main Agent (query_icons)`"]:::gcpBlue
-    Draft@{ icon: "fa:robot" }
+    Draft["`**2. Draft Code**<br>Main Agent (query_icons)`"]
+    Draft@{ icon: "gcp:advanced-agent-modeling" }
     
     Heal["`**3. Syntactic Healing**<br>mermaid-linter-fixer`"]:::gcpGreen
-    Heal@{ icon: "fa:stethoscope" }
+    Heal@{ icon: "fa:circle-check" }
     
     Audit["`**4. Aesthetic Audit**<br>mermaid-auditor`"]:::gcpYellow
-    Audit@{ icon: "fa:magnifying-glass" }
+    Audit@{ icon: "fa:eye" }
     
     Save["`**5. File Export**<br>_improved.mmd`"]:::neutral
     Save@{ icon: "fa:file-code" }
