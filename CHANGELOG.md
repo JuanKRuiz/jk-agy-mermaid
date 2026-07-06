@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Changed
 - 🔄 **Workflow Layout Flattening:** Flattened the repository structure by moving `references/workflows/*` directly to `workflows/*` and removing the redundant `references/` directory, updating all path references across documentation, skills, and agent instructions.
+- 🔄 **YAML Frontmatter Transition:** Replaced the deprecated class diagram single-line initialization directive (`%%{init: ...}%%`) with standard YAML Frontmatter configuration block in `skills/mermaid-designer/SKILL.md` to improve syntax compatibility and maintainability of theme variables.
 
 ---
 
@@ -31,7 +32,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 - 📂 **Flat Agent Structure (No Subfolders):** Simplified and flattened local subagents from `.agents/plugins/...` directly to flat Markdown files in `.agents/agents/git-sentinel.md` and `.agents/agents/chronicler.md`, removing unnecessary nesting and optimizing execution.
 - 📝 **Format Modernization (Markdown-First):** Migrated local subagent configurations (`git-sentinel` and `chronicler`) from JSON (`.json`) to Markdown (`.md`) system format, adopting the latest Antigravity CLI (`agy`) agent definition convention and enabling rich system prompts.
 - 🛡️ **Robust Gitignores (Immune Exclusion):** Updated ignore rule in `.gitignore` to the global highly resilient pattern `!**/icons_cache.db` to ensure the static index is immune to any inherited directory discard rules or accidental overrides.
-- 🔌 **Dynamic Agent Injection (Zero-Commit):** Restructured the architecture so that local subagents (`git-sentinel` and `chronicler`) are dynamically injected from the skill and do not form part of the versioned codebase. Excluded the `.agents/` folder in `.gitignore` and safely removed it from the Git index, keeping them physically on disk only for local consumption and on-the-fly execution by Antigravity.
+- 🛡️ **Dynamic Agent Injection (Zero-Commit):** Restructured the architecture so that local subagents (`git-sentinel` and `chronicler`) are dynamically injected from the skill and do not form part of the versioned codebase. Excluded the `.agents/` folder in `.gitignore` and safely removed it from the Git index, keeping them physically on disk only for local consumption and on-the-fly execution by Antigravity.
 
 ### Fixed
 - 🐛 **Icon Database Enforcement:** Enforced database-only icon validation requirements to prevent visual rendering failures from unsupported or deprecated icons.

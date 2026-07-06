@@ -216,10 +216,20 @@ For step-by-step transactional and detailed messaging flows, follow these direct
 
 To model object-oriented software structures and code relationships, follow these directives:
 
-1.  **Single-Line Initialization (Init Directive):**
-    The technical initialization directive must be written compactly on the **first line of the file and on a single line** to guarantee compatibility with all versions of the Mermaid parser:
-    ```
-    %%{init: {'theme': 'base', 'themeVariables': {'fontFamily': 'Roboto', 'primaryColor': '#ffffff', 'mainBkg': '#ffffff', 'clusterBkg': '#ffffff', 'background': '#ffffff', 'edgeLabelBackground': '#ffffff'}}}%%
+1.  **Mandatory YAML Frontmatter Configuration:**
+    The technical configuration must be defined inside a standard YAML Frontmatter header enclosed by three hyphens `---` at the absolute beginning of the file to configure theme variables:
+    ```yaml
+    ---
+    config:
+      theme: base
+    themeVariables:
+      fontFamily: Roboto
+      primaryColor: '#ffffff'
+      mainBkg: '#ffffff'
+      clusterBkg: '#ffffff'
+      background: '#ffffff'
+      edgeLabelBackground: '#ffffff'
+    ---
     ```
 2.  **Clean and Hierarchical Topology:**
     *   Always declare the vertical direction: `direction TB`.
