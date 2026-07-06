@@ -103,7 +103,7 @@ themeVariables:
 flowchart TD
     subgraph VPC ["Virtual Private Cloud (Prod)"]
         direction TB
-        LB["`**Cloud Load Balancing**`"]:::gcpBlue
+        LB["`**Cloud Load Balancing**`"]
         LB@{ icon: "gcp:cloud-load-balancing" }
         
         App["`**Compute Engine**`"]:::gcpBlue
