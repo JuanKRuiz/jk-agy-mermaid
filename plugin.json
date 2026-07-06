@@ -10,6 +10,7 @@
     "agents/mermaid-learner.md"
   ],
   "rules": [
+    "rules/agentic-orchestration-pipeline.md",
     "rules/mermaid-flowchart-styling.md",
     "rules/mermaid-syntax-robustness.md",
     "rules/mermaid-learning-loop.md"
