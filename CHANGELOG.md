@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ---
 
+## [Unreleased]
+
+### Added
+- 🛡️ **Icon Compliance Standard:** Integrated a strict, mandatory database-only icon compliance rule in `skills/mermaid-designer/SKILL.md` to prohibit any icon that is not physically present in `icons_cache.db`, enforcing query checks via `query_icons.py`.
+
+---
+
 ## [1.0.0] - 2026-07-05
 
 ### Added
