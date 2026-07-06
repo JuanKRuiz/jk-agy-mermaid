@@ -1,0 +1,17 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "jk-agy-mermaid",
+  "description": "Professional Mermaid architect design plugin, specializing in high-fidelity layout styling, auto-heal syntax linting, and auto-adaptive icon learning for AWS, GCP, Azure, and Logos.",
+  "version": "1.0.0",
+  "skills": ["skills/mermaid-designer"],
+  "agents": [
+    "agents/mermaid-auditor.md",
+    "agents/mermaid-linter-fixer.md",
+    "agents/mermaid-learner.md"
+  ],
+  "rules": [
+    "rules/mermaid-flowchart-styling.md",
+    "rules/mermaid-syntax-robustness.md",
+    "rules/mermaid-learning-loop.md"
+  ]
+}

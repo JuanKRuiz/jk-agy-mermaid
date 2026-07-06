@@ -1,0 +1,68 @@
+# ==============================================================================
+# JK-AGY-MERMAID - GIT IGNORE PRESETS
+# ==============================================================================
+
+# --- Python Compilation Artifacts ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.tox/
+
+# --- Virtual Environments ---
+.venv/
+venv/
+env/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+
+# --- SQLite databases (Regenerated Build Artifacts) ---
+*.db
+*.sqlite
+*.sqlite3
+
+# Except static pre-built icon index required by the solution
+!skills/mermaid-designer/resources/databases/icons_cache.db
+!**/icons_cache.db
+
+# --- Antigravity Temporary & Cache Folders ---
+.gemini/
+.system_generated/
+scratch/
+brain/
+*.log
+
+# --- Local Agent Injections (Ignored by Repo, Read by LLM) ---
+.agents/
+
+# --- Node.js & Javascript Dependencies ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# --- IDE & OS Metadata ---
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db
