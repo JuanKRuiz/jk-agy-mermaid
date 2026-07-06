@@ -193,4 +193,4 @@ The `mermaid-learner` agent governs permanent visual immunity under the followin
 
 ---
 
-*jk-agy-mermaid Plugin by JuanK Ruiz - Engineering and Documentation Excellence.*
+*Developed with passion for the Antigravity community by JuanK Ruiz.*
