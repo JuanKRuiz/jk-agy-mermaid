@@ -14,10 +14,10 @@ This skill equips the Antigravity agent with industrial-grade, expert capabiliti
 This skill organizes its knowledge assets progressively. Depending on the type of operation required, you can access detailed documentation and tools in:
 
 ### A. Workflow Guides
-*   **Design from Scratch:** [references/workflows/draw-flowchart.md](references/workflows/draw-flowchart.md)
-    *   *Usage:* Step-by-step interactive workflow to create TB diagrams with clean subgraphs and high-contrast theme variables.
-*   **Sanitization and Repair:** [references/workflows/fix-broken-diagram.md](references/workflows/fix-broken-diagram.md)
-    *   *Usage:* Triage and auto-healing algorithms to fix loose quotes, parentheses, and remove semicolons.
+*   **Design from Scratch:** [workflows/draw-flowchart.md](workflows/draw-flowchart.md)
+*   *Usage:* Step-by-step interactive workflow to create TB diagrams with clean subgraphs and high-contrast theme variables.
+*   **Sanitization and Repair:** [workflows/fix-broken-diagram.md](workflows/fix-broken-diagram.md)
+*   *Usage:* Triage and auto-healing algorithms to fix loose quotes, parentheses, and remove semicolons.
 
 ### B. Automation Tools (Scripts)
 *   **Indexed Icon Finder (MANDATORY):** 
@@ -78,56 +78,65 @@ This skill automatically activates when any of the following conversation contex
 4.  **Strict Sibling Creation Policy:** When optimizing, improving, or refactoring an existing diagram (e.g., `folder/filename.mmd`), it is **strictly forbidden** to modify or overwrite the original file. Instead, you must **always create a new file** in the same folder as the original, renaming it with the suffix `_improved.mmd` or `_optimized.mmd` (e.g., `folder/filename_improved.mmd`).
 5.  **Prohibition of Inline Icons and Use of Separate Native Syntax:** It is completely forbidden to use icon codes within node text or labels (such as `["fa:user Label"]`). You must strictly use separate native icon declaration syntax: `id["Label"]` and on the immediately following line `id@{ icon: "category:name" }`.
 6.  **Prohibition of Yellow Backgrounds in Subgraphs and Explicit Styling:** It is **strictly forbidden** to leave subgraphs with Mermaid's default yellow background color (`#FBBC04` or `#fef7e0`). Every subgraph declared in the diagram must have its corresponding explicit styling directive declared at the end of the flowchart (e.g., `style SGId fill:#ffffff,stroke:#9E9E9E,stroke-width:2px`). If a subgraph remains yellow, it is considered a severe design error.
-7.  **Strict Database-Only Icon Compliance (MANDATORY):** It is **strictly prohibited** to use any icon (whether Font Awesome `fa:*`, Cloud `gcp:*`/`aws:*`/`azure:*`, or logo `logos:*`) that does not physically exist in the pre-populated SQLite database index (`icons_cache.db`). Verify icon status via `query_icons.py --code <icon_code>` or `query_icons.py --batch "<term>"` and replace unsupported or deprecated icons with active, database-validated equivalents (e.g., `fa:circle-check` for validations, `fa:eye` for audits, `fa:lightbulb` for learnings, `fa:user` for users, `fa:file-code` for files, or standard GCP/AWS/Azure icons).
+7.  **Strict Database-Only Icon Compliance (MANDATORY):** It is **strictly prohibited** to use any icon (whether Font Awesome `fa:*`, Cloud `gcp:*`/`aws:*`/`azure:*`, or logo `logos:*`) that does not physically exist in the pre-populated SQLite database index (`icons_cache.db`). You must only use icons present in the database, **OR** use standard Mermaid shapes with absolutely no icons. Standard figures without icons are a fully compliant alternative when no suitable icon is present in the database. Verify icon status via `query_icons.py --code <icon_code>` or `query_icons.py --batch "<term>"` and replace unsupported or deprecated icons with active, database-validated equivalents.
+8.  **Existing Diagram Sanitization First (MANDATORY):** When working on an already created or pre-existing diagram, the absolute first step is to sanitize it. The syntactic linter (`mermaid-linter-fixer` subagent) must be activated immediately as the entry gate to fix any pre-existing syntax anomalies before applying any further improvements, modifications, or aesthetic styling.
 
 ---
 
-## 4. Ultra-Fast Zero-Exploration Workflow Guide
+## 4. Master 6-Step Diagramming & Sanitization Workflow Guide
 
-When invoked to create, modify, audit, or improve a Mermaid diagram in this workspace, **YOU ARE FORBIDDEN** to improvise, explore the file system, perform directory listings, or rewrite search scripts. You must strictly follow this 5-step consecutive flow and call only the indicated tools:
+When invoked to create, modify, audit, or improve a Mermaid diagram in this workspace, **YOU ARE FORBIDDEN** to improvise or deviate from this consecutive flow. Every diagram must undergo this precise lifecycle.
 
-### Step 1: Read the Original Diagram (or Input File)
-If the user provides an `.mmd` file or a path to improve, read it **immediately** using the `view_file` tool on its absolute path.
-*   *Forbidden Action:* DO NOT list folders (`ListDir`) or perform file searches (`grep_search`) to locate the file.
-*   *Tool:* `view_file` (e.g., `view_file {AbsolutePath: "/mnt/d/Gemini/.../file.mmd"}`)
+### Phase 0: Sanitization First (For Pre-Existing Diagrams)
+If working on an already created or pre-existing diagram (e.g., modifying, optimizing, or fixing a file):
+1.  **Read the Original File:** Instantly read the diagram using the `view_file` tool.
+2.  **Activate Linter Pass Immediately:** Before making any design modifications, icon changes, or styling passes, you **MUST** run a first pass of the `mermaid-linter-fixer` subagent to heal any pre-existing syntax errors (parentheses, mismatched quotes, unbalanced subgraphs, or trailing semicolons in `linkStyle`). This guarantees a clean, compile-safe baseline.
 
-### Step 2: Batch Icon Resolution (One-Shot Batching Policy)
-Exhaustively analyze the diagram or input text. **YOU ARE FORBIDDEN** to make iterative or sequential refinement calls to search for icons or variants. You must plan and consolidate all information into **A SINGLE MASSIVE CALL** covering:
-1.  **Literal Terms:** Specific diagram concepts (e.g., `"vpc service controls"`, `"notebook"`).
-2.  **Technological Variants and Synonyms:** Different ways of naming the technology (e.g., `"entra id"`, `"entra-id"`, `"active directory"`).
-3.  **Intuitive Brand Prefixes:** If you know it is GCP, Azure, AWS, or Font Awesome, add the prefix for an exact match (e.g., `"gcp:virtual-private-cloud"`, `"azure:entra-verified-id"`, `"fa:user"`, `"logos:flutter"`).
-4.  **Fallback Generic Terms:** If the brand fails, generic concepts that can provide a semantically valid icon (e.g., `"user"`, `"mobile"`, `"search"`, `"shield"`, `"database"`).
+---
 
-*Example of Exhaustive Consolidation in a single call:*
-`python3 jk-agy-mermaid/skills/mermaid-designer/scripts/query_icons.py --batch "user" "fa:user" "mobile app" "logos:flutter" "microsoft entra id" "azure:entra-verified-id" "active directory" "workload identity federation" "vpc service controls" "gcp:virtual-private-cloud" "gemini" "gcp:vertexai" "notebook" "search engine" "azure:search" "microsoft 365" "logos:microsoft" "bigquery" "gcp:bigquery" "shield" "database"`
+### The 6-Step Construction & Optimization Lifecycle
 
-*   *Forbidden Action:* DO NOT launch consecutive refinement calls. If you missed a term, it is a critical planning failure. Plan all terms and their variants before executing the tool. DO NOT list directories or query help commands.
-*   *Tool:* `run_command` with the plugin's autonomous script.
-*   *Exact Formula:*
-    `python3 jk-agy-mermaid/skills/mermaid-designer/scripts/query_icons.py --batch "term1" "term2" "term3" "term4" ...`
+#### Step 1: Icon & Figure Selection (Dual-Path Policy)
+*   **Dual-Path Enforcement:** You must strictly follow a dual-path selection:
+    1.  **Valid Database Icons:** Only use icons that are physically registered and active in the database. Call the authorized index tool in a single consolidated massive call:
+        `python3 jk-agy-mermaid/skills/mermaid-designer/scripts/query_icons.py --batch "<term 1>" "<term 2>" ...`
+    2.  **Standard Iconless Figures:** If no suitable icon exists in the database, or if the icon query fails, you **MUST** fall back to standard Mermaid shapes (e.g., rects, rounded boxes, cylinders) with absolutely **NO icon**. Using unregistered or speculative icons is strictly prohibited.
+*   *Forbidden Action:* Running sequential, iterative icon search commands or manual python sqlite3 scripts.
 
-### Step 3: Structuring and Applying Design Rules
-Write the Mermaid code applying the following fixed design rules:
-1.  **Premium Markdown Labels:** Format node text elegantly using `"`**Text**`"`.
-2.  **Separated Icon Declaration:** Always declare the node on one line and its icon on the immediately following line:
-    ```mermaid
-    Id["`**Name**`"]
-    Id@{ icon: "category:name" }
-    ```
-3.  **Zero-Style for External Brands:** If the query in Step 2 indicates that the icon has `"is_style_compatible": 0` (like AWS, Azure, and Logos logos), **DO NOT** apply any CSS styling class (neither `zeroStyle` nor colors). Leave them clean and transparent so they preserve their SVG intact.
-4.  **Pastel Classes for GCP/FA:** If the icon has `"is_style_compatible": 1` (GCP and Font Awesome), you can associate the standard pastel classes (`:::gcpBlue`, `:::gcpGreen`, `:::gcpYellow`) defined at the end of the diagram.
-5.  **Mandatory Styling for ALL Subgraphs:** Apply explicit styles at the end of the diagram for all subgraphs using **exclusivamente** one of these pastel combinations:
-    *   *Client/External:* `style ID_SG fill:#ffffff,stroke:#9E9E9E,stroke-dasharray:5 5,stroke-width:2px;`
-    *   *Security/Private:* `style ID_SG fill:#e6f4ea,stroke:#1E8E3E,stroke-width:2px;`
-    *   *GCP Compute/Infrastructure:* `style ID_SG fill:#e8f0fe,stroke:#1967D2,stroke-width:2px;`
-    *   *Support/Secondary:* `style ID_SG fill:#f9f9f9,stroke:#DADCE0,stroke-width:2px;`
+#### Step 2: Respect Database Attributes & Style Compatibility
+*   Check and apply the metadata returned by `query_icons.py` or queried via `query_icons.py --code <icon_code>`:
+    *   **Style Compatibility (`is_style_compatible`):** If an icon has `is_style_compatible: 0` (e.g., AWS, Azure, Logos, or GCP gradients), strictly apply the **Zero-Style Rule** (no fill or stroke classes, leaving the node transparent to keep SVGs pristine).
+    *   **Blacklist & Substitutes:** Ensure no blacklisted icons are used. Use recommended substitute codes if present in the database metadata.
 
-### Step 4: Creating the Output File (Improved Suffix)
-Write the new diagram in the same directory as the original with the suffix `_improved.mmd` using the `write_to_file` tool.
-*   *Forbidden Action:* DO NOT overwrite the original file. DO NOT use Markdown code block backticks (```) inside the file.
-*   *Tool:* `write_to_file` with `Overwrite: true`.
+#### Step 3: Connectors Optimization (Aesthetic Wiring)
+*   Optimize connection lines with premium, high-contrast styles, colors, animations, and widths.
+*   **Arrow Standardization:** Use only the 4 standard Mermaid flowchart connectors:
+    *   `-->` (Standard solid arrow)
+    *   `==>` (Thick solid arrow - representing primary flows/critical paths)
+    *   `-.->` (Dotted arrow - representing control or secondary flows)
+    *   `~~~` (Invisible line - to force spatial layouts)
+*   **Custom linkStyle:** Apply explicit styles to connectors using `linkStyle` (without trailing semicolons) to add distinct colors and thickness based on semantics (e.g., red for errors/failures, green for secure pathways).
+*   **Animations:** Use the `stroke-dasharray` property in `linkStyle` to create sleek animations or custom dotted flows for specialized pathways.
 
-Follow this strict sequential flow. Any detour or unnecessary file exploration will be considered a runtime optimization failure.
+#### Step 4: Complexity Reduction with Waypoints or Junction Buses
+*   Evaluate diagram density. If crossings exceed 4 or connectors traverse multiple intermediate subgraphs:
+    *   **Waypoints (Circular Teleporters):** Replace spaghetti lines with neat local circle nodes at the source and destination (e.g., `wpA(((A))):::wp_blue`).
+    *   **Junction Bus Pattern:** Consolidate multiple parallel connections pointing to a single subgraph into a single entry `junction` gateway node, avoiding crossed line clutter.
+
+#### Step 5: Syntactic Linter Pass (`mermaid-linter-fixer`)
+*   Run the `mermaid-linter-fixer` subagent to perform standard syntactic checks:
+    *   Escape all loose parentheses inside node labels with the `"`**Text**`"` or double-quote-backtick wrapper `` "`Text (with parenthesis)`" `` (flowcharts only).
+    *   Balance mismatched quotes or shape delimiters.
+    *   Eradicate trailing semicolons `;` in `linkStyle` commands.
+    *   Limit subgraph nesting to a maximum of 2 depth levels. Promoted deeper nodes to second-level containers (Logical Flattening).
+    *   Convert any inline icon syntax (e.g., `node["fa:user Label"]`) into native separate declarations.
+
+#### Step 6: Aesthetic & Icon Auditor Pass (`mermaid-auditor`)
+*   Run the `mermaid-auditor` subagent as the final gatekeeper before outputting the file:
+    *   Verify that **every** declared subgraph has an explicit background override style (absolutely no default yellow backgrounds).
+    *   Validate that **no** unsupported, unregistered, or blacklisted icons are rendered.
+    *   Ensure all node text is formatted elegantly using `"`**Bold Text**`"` and forces proper black/white contrast.
+    *   Enforce that the final `.mmd` output is written to a sibling file with the `_improved.mmd` suffix (Sibling Creation Policy) to preserve original source files.
 
 ---
 

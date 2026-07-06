@@ -155,13 +155,23 @@ Subgraph colorization is not a decorative element; it represents the operational
 
 ---
 
-## 7. Strict Limitation to Database-Supported Icons (MANDATORY)
+## 7. Icon Dual-Path Policy, Connector Optimization, and Complexity Reduction (MANDATORY)
 
-To ensure consistency, portability, and reliable rendering within the offline execution limits of the Antigravity system, a strict rule for brand and typography icons is established:
+To ensure consistency, portability, and reliable rendering within the offline execution limits of the Antigravity system, all diagram designs must adhere to these absolute architectural rules:
 
-*   **DATABASE ONLY REQUIREMENT:** It is **strictly prohibited** to use any icon (whether it is Font Awesome `fa:*`, Cloud `gcp:*`/`aws:*`/`azure:*`, or logo `logos:*`) that does not physically exist in the pre-populated SQLite database index (`icons_cache.db`).
-*   **REJECTION OF EXTERNAL OR DEPRECATED ICONS:** Any diagram utilizing an icon not present in the database violates compliance and **must be rejected** by the auditor.
-*   **VERIFICATION PROCESS:** Before applying any icon, the agent or script must query the code via `query_icons.py --code <icon_code>` or search terms via `query_icons.py --batch "<term>"` to verify its existence and fetch its compliance attributes (e.g., `is_style_compatible` or `is_blacklisted`).
+### A. Dual-Path Icon Policy
+*   **Database-Only Icons:** It is **strictly prohibited** to use any icon (Font Awesome `fa:*`, Cloud `gcp:*`/`aws:*`/`azure:*`, or logo `logos:*`) that does not physically exist in the pre-populated SQLite database index (`icons_cache.db`). Any diagram utilizing an unregistered icon violates compliance and **must be rejected** by the auditor.
+*   **Standard Iconless Figures:** When a required concept is not present in the database, you **MUST** use standard, pure Mermaid shapes (rectangles, rounded boxes, cylinders, circles) with **absolutely no icons**. Standard icon-less figures are the official, fully compliant path to represent concepts without database-registered icons.
+*   **Verification:** Always run `query_icons.py --batch` to resolve concepts and respect the returned `is_style_compatible`, `is_blacklisted`, and substitute metadata.
 
+### B. Connector Optimization & Custom linkStyle
+*   **Standard Arrows:** Wire your diagrams using only the 4 standard flowchart connectors:
+    *   `-->` (Standard solid arrow)
+    *   `==>` (Thick solid arrow - for primary flows/critical paths)
+    *   `-.->` (Dotted arrow - for control or secondary flows)
+    *   `~~~` (Invisible line - to force spatial layouts)
+*   **Custom linkStyle:** Apply explicit styles to connectors using `linkStyle` (systematically removing the trailing semicolon) to add semantic colors, custom line weights, and animations (e.g., `stroke-dasharray` for customized dash rates). Keep connectors contrasting and clean.
 
-
+### C. Complexity Reduction with Waypoints & Junction Buses
+*   **Waypoints (Teleporters):** If connection arrows traverse multiple subgraphs or cross more than 4 times, replace the long spaghetti arrow with a local circular concentric port at both source and destination (e.g., `wpA(((A))):::wp_blue`). Use matching waypoint style classes (`:::wp_blue`, `:::wp_green`, etc.) to denote the common logical link.
+*   **Junction Bus Pattern:** Group parallel connections going to a single subgraph into a single entrance `junction` gateway node inside that subgraph to avoid overlapping lines and clutter.

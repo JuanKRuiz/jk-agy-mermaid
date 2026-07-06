@@ -29,10 +29,9 @@ jk-agy-mermaid/
 └── skills/
     └── mermaid-designer/       # Master Skill encapsulating assets, scripts, and workflows
         ├── SKILL.md            # Skill descriptor with activation and execution directives
-        ├── references/         # Detailed workflow guides
-        │   └── workflows/
-        │       ├── draw-flowchart.md       # Interactive design-from-scratch guide (TD/ELK)
-        │       └── fix-broken-diagram.md   # Step-by-step triage and repair guide
+        ├── workflows/          # Detailed workflow guides
+        │   ├── draw-flowchart.md       # Interactive design-from-scratch guide (TD/ELK)
+        │   └── fix-broken-diagram.md   # Step-by-step triage and repair guide
         ├── resources/          # Indexable data catalogs of official iconography
         │   └── databases/
         │       ├── icons_cache.db          # [Pre-compiled] Master SQLite icons index

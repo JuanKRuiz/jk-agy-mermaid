@@ -90,20 +90,24 @@ flowchart TD
     User["`**1. User Prompt**`"]:::neutral
     User@{ icon: "fa:user" }
     
-    Draft["`**2. Draft Code**<br>Main Agent (query_icons)`"]
-    Draft@{ icon: "gcp:advanced-agent-modeling" }
+    Step1["`**2. Icon / Fig Selection**<br>Main Agent (Step 1-2)`"]
+    Step1@{ icon: "gcp:advanced-agent-modeling" }
+
+    Step3["`**3. Wire & Layout**<br>Connectors & Waypoints (Step 3-4)`"]:::gcpBlue
+    Step3@{ icon: "fa:file-code" }
     
-    Heal["`**3. Syntactic Healing**<br>mermaid-linter-fixer`"]:::gcpGreen
+    Heal["`**4. Syntactic Healing**<br>mermaid-linter-fixer (Step 5)`"]:::gcpGreen
     Heal@{ icon: "fa:circle-check" }
     
-    Audit["`**4. Aesthetic Audit**<br>mermaid-auditor`"]:::gcpYellow
+    Audit["`**5. Aesthetic Audit**<br>mermaid-auditor (Step 6)`"]:::gcpYellow
     Audit@{ icon: "fa:eye" }
     
-    Save["`**5. File Export**<br>_improved.mmd`"]:::neutral
+    Save["`**6. Sibling Export**<br>_improved.mmd`"]:::neutral
     Save@{ icon: "fa:file-code" }
     
-    User --> Draft
-    Draft --> Heal
+    User --> Step1
+    Step1 --> Step3
+    Step3 --> Heal
     Heal --> Audit
     Audit --> Save
     
@@ -113,21 +117,20 @@ flowchart TD
     classDef gcpYellow fill:#FEF7E0,stroke:#B06000,stroke-width:2px,color:#000
 ```
 
-1.  **Drafting (Main Agent):**
-    *   Analyzes the requirements and performs a single massive batch lookup of brand icons via the SQLite CLI search engine:
-        `python3 [path/to/]skills/mermaid-designer/scripts/query_icons.py --batch "term 1" "term 2" ...`
-    *   Constructs the initial draft incorporating ELK layout configuration, YAML frontmatter, subgraphs, and node connections.
-2.  **Syntactic Healing (Linter-Fixer subagent):**
+1.  **Icon & Figure Selection (Main Agent - Step 1 & 2):**
+    *   **Dual-Path Enforcement:** Extracts required node concepts and performs a single massive batch lookup via `query_icons.py --batch`. Only uses registered database icons **or** falls back to standard iconless Mermaid shapes. No speculative inline icons or manual SQL connections allowed.
+    *   **Attributes Check:** Verifies database metadata (`is_style_compatible`, blacklist, recommended substitutes).
+2.  **Wiring, Styling & Layout Optimization (Main Agent - Step 3 & 4):**
+    *   **Connectors Optimization:** Designs high-contrast connection pathways using standard arrow types (`-->`, `==>`, `-.->`, `~~~`), applying semantic styles (e.g., `linkStyle` with custom colors or dashed animations).
+    *   **Complexity Reduction:** Minimizes line crossovers using concentric circular waypoints `(((X)))` or junction bus gateway nodes.
+3.  **Syntactic Healing (Linter-Fixer subagent - Step 5):**
     *   The Main Agent invokes `mermaid-linter-fixer` with the draft.
-    *   The linter-fixer audits the syntax, escapes parentheses, matches quotes, corrects semicolons, and enforces the maximum nesting limit of 2.
-    *   *Output:* A syntactically robust Mermaid draft.
-3.  **Aesthetic Audit (Auditor subagent):**
-    *   The Main Agent invokes `mermaid-auditor` with the syntactically healed draft.
-    *   The auditor checks that **every** subgraph has an explicit styling override (no default yellow), and verifies that icons marked with `is_style_compatible = 0` (AWS, Azure, Logos, or GCP gradients) have **zero style classes applied** (Zero-Style rule).
-    *   *Output:* A visually pristine, high-contrast, brand-compliant diagram code block.
-4.  **Sibling Export & Delivery (Main Agent):**
-    *   Saves the finalized code into a separate file using the **Sibling Creation Policy** (`filename_improved.mmd` or `filename_optimized.mmd`) to preserve original files.
-    *   Presents the code, visual preview, and explanation to the user.
+    *   The linter-fixer escapes parentheses in labels, balances quotes, cleans up trailing semicolons in `linkStyle`, limits subgraph nesting depth to 2, and separates inline icon labels.
+4.  **Aesthetic & Icon Audit (Auditor subagent - Step 6):**
+    *   The Main Agent invokes `mermaid-auditor` to perform final validation.
+    *   The auditor verifies Zero-Style rule compliance, guarantees explicit styling for ALL subgraphs (strictly no default yellow), and verifies that absolutely no unregistered or blacklisted icons render.
+5.  **Sibling Export & Delivery (Main Agent):**
+    *   Writes final code block to a separate sibling file (`filename_improved.mmd` or `filename_optimized.mmd`) to preserve original files intact.
 
 ---
 
@@ -135,11 +138,12 @@ flowchart TD
 
 When the user requests changes, iterations, or refinements to an existing diagram:
 
-1.  **Change Injection:** The Main Agent reads the current diagram and injects the requested modifications into the Mermaid structure.
-2.  **Re-Validation Pipeline:**
-    *   The draft is automatically routed back through **Phase I (Step 2: Syntactic Healing)** and **Phase I (Step 3: Aesthetic Audit)**.
-    *   Specialized agents must verify that the user's requested edits have not introduced bracket imbalance, unescaped text, or styling overrides on "Zero-Style" brand icons.
-3.  **Delivery:** The updated code is saved to the improved sibling file and presented.
+1.  **Phase 0: Sanitization First (MANDATORY):** Before injecting modifications or applying new styles/icons, the Main Agent **MUST** run a first pass of the `mermaid-linter-fixer` to sanitize and heal any pre-existing syntax errors in the original code.
+2.  **Change Injection:** The Main Agent applies the requested modifications to the sanitized Mermaid baseline.
+3.  **Full Re-Validation Pipeline:**
+    *   The updated diagram is routed through **Phase I (Step 1-6)**.
+    *   Both `mermaid-linter-fixer` and `mermaid-auditor` must re-verify syntax, database-only icon compliance, Zero-Style adherence, and explicit subgraph coloring.
+4.  **Sibling Save & Delivery:** The updated diagram is written to the improved sibling file and presented to the user.
 
 ---
 

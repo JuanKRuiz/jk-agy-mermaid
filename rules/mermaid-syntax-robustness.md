@@ -4,6 +4,14 @@ This directive establishes the immutable syntactic standards and pre-validation 
 
 ---
 
+## 0. Phase 0: Pre-Existing Diagram Sanitization First (MANDATORY)
+
+When working on an already created or pre-existing Mermaid diagram:
+*   **IMMEDIATE ACTIVATION:** The syntactic linter (`mermaid-linter-fixer` subagent) must be activated **immediately as the absolute first step**.
+*   **RATIONALE:** Pre-existing syntax errors must be completely resolved and healed before any new changes, brand icons, waypoint structures, or custom styling classes are applied. Modifying a broken diagram without first sanitizing it results in compounding parsing failures.
+
+---
+
 ## 1. The Auto-Heal Algorithm (Syntactic Error Correction)
 
 Any generated or corrected Mermaid code block must be subjected to the following structured sanity table:
