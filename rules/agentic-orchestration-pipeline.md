@@ -22,12 +22,13 @@ themeVariables:
   clusterBkg: '#F8F9FA'
   clusterBorder: '#DADCE0'
   lineColor: '#5F6368'
+  edgeLabelBackground: '#ffffff'
 ---
 flowchart TD
     subgraph Matrix ["Antigravity Mermaid Agent Matrix"]
         direction TB
         Main["`**Main Agent (Orchestrator)**`"]:::gcpBlue
-        Main@{ icon: "gcp:advanced-agent-modeling" }
+        Main@{ icon: "fa:robot" }
         
         Linter["`**mermaid-linter-fixer**<br>Syntactic Guardian`"]:::gcpGreen
         Linter@{ icon: "fa:stethoscope" }
@@ -83,13 +84,14 @@ themeVariables:
   clusterBkg: '#F8F9FA'
   clusterBorder: '#DADCE0'
   lineColor: '#5F6368'
+  edgeLabelBackground: '#ffffff'
 ---
 flowchart TD
     User["`**1. User Prompt**`"]:::neutral
     User@{ icon: "fa:user" }
     
     Draft["`**2. Draft Code**<br>Main Agent (query_icons)`"]:::gcpBlue
-    Draft@{ icon: "gcp:advanced-agent-modeling" }
+    Draft@{ icon: "fa:robot" }
     
     Heal["`**3. Syntactic Healing**<br>mermaid-linter-fixer`"]:::gcpGreen
     Heal@{ icon: "fa:stethoscope" }
