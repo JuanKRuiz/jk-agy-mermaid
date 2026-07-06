@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Added
 - 🛡️ **Icon Compliance Standard:** Integrated a strict, mandatory database-only icon compliance rule in `skills/mermaid-designer/SKILL.md` to prohibit any icon that is not physically present in `icons_cache.db`, enforcing query checks via `query_icons.py`.
+- 🛡️ **Phase 0 Sanitization Rule:** Enforced a mandatory "Pre-Existing Diagram Sanitization First" rule across syntax robustness guidelines and the linter-fixer agent prompt, requiring immediate activation of `mermaid-linter-fixer` as the entry gate before applying modifications or styling.
+- 🧩 **6-Step Diagramming Workflow:** Integrated the "Master 6-Step Diagramming & Sanitization Workflow Guide" in `skills/mermaid-designer/SKILL.md` and related agent/pipeline prompts. This includes the new **Icon Dual-Path Policy** (using database-approved icons or falling back to iconless shapes) and complexity reduction techniques (Waypoints & Junction Buses).
+
+### Changed
+- 🔄 **Workflow Layout Flattening:** Flattened the repository structure by moving `references/workflows/*` directly to `workflows/*` and removing the redundant `references/` directory, updating all path references across documentation, skills, and agent instructions.
 
 ---
 
