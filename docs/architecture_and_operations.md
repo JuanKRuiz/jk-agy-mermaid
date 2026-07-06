@@ -14,10 +14,6 @@ jk-agy-mermaid/
 ├── README.md                   # Clean, public-facing user guide
 ├── docs/
 │   └── architecture_and_operations.md  # [This Document] In-depth technical architecture
-├── .agents/                    # [GIT-IGNORED] Dynamically injected local Git agents
-│   └── agents/
-│       ├── chronicler.md       # Auto-changelog documentation manager
-│       └── git-sentinel.md     # Pre-commit & stage compliance auditor
 ├── agents/                     # Versioned Antigravity system prompts
 │   ├── mermaid-auditor.md      # Esthetic consistency, contrast, and "Zero-Style" rule auditor
 │   ├── mermaid-linter-fixer.md # Preventive syntactic healer (parentheses, quotes, linkStyle)
@@ -48,7 +44,7 @@ jk-agy-mermaid/
 
 ## 👥 Specialized Agent Matrix
 
-To optimize cognitive load, the plugin distributes responsibility across three versioned Antigravity agents, two git-ignored local agents, and one master skill:
+To optimize cognitive load, the plugin distributes responsibility across three versioned Antigravity agents and one master skill:
 
 ### 🌐 Versioned Project Agents (Included in Repo)
 | System Role | Technical Name | Primary Responsibility | Associated Rule/Asset |
@@ -57,12 +53,6 @@ To optimize cognitive load, the plugin distributes responsibility across three v
 | 🎨 **Style Auditor** | `mermaid-auditor` | Guarantees visual consistency, contrast, and corporate brand palettes. Audits and removes default yellow backgrounds, and enforces "Zero-Style". | `mermaid-flowchart-styling.md` |
 | 🩺 **Syntactic Healer** | `mermaid-linter-fixer` | Analyzes code defensively. Corrects syntax, balances quotes, escapes parentheses in flowcharts, and flattens subgraphs. | `mermaid-syntax-robustness.md`, `fix-broken-diagram.md` |
 | 🧠 **Learning Manager** | `mermaid-learner` | System immunity. Classifies rendering glitches, updates local exclusion markdown files, and hot-patches diagrams. | `mermaid-learning-loop.md` |
-
-### 🔒 Injected Local Agents (Git-Ignored / Local Environment Only)
-| System Role | Technical Name | Primary Responsibility | Interaction Target |
-| :--- | :--- | :--- | :--- |
-| 📝 **Auto-Chronicler** | `chronicler` | Audits git diffs and staging commits to automatically maintain a standardized, emoji-rich `CHANGELOG.md` following *Keep a Changelog*. | `CHANGELOG.md` |
-| 🛡️ **Git Sentinel** | `git-sentinel` | Audits staging areas, enforces Conventional Commits, prevents hardcoded secrets, and blocks versioned build artifacts. | Git Staging Area |
 
 ---
 
