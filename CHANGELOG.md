@@ -20,3 +20,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 - 📝 **Format Modernization (Markdown-First):** Migrated local subagent configurations (`git-sentinel` and `chronicler`) from JSON (`.json`) to Markdown (`.md`) system format, adopting the latest Antigravity CLI (`agy`) agent definition convention and enabling rich system prompts.
 - 🛡️ **Robust Gitignores (Immune Exclusion):** Updated ignore rule in `.gitignore` to the global highly resilient pattern `!**/icons_cache.db` to ensure the static index is immune to any inherited directory discard rules or accidental overrides.
 - 🔌 **Dynamic Agent Injection (Zero-Commit):** Restructured the architecture so that local subagents (`git-sentinel` and `chronicler`) are dynamically injected from the skill and do not form part of the versioned codebase. Excluded the `.agents/` folder in `.gitignore` and safely removed it from the Git index, keeping them physically on disk only for local consumption and on-the-fly execution by Antigravity.
+
+### Fixed
+- 🐛 **Icon Database Enforcement:** Enforced database-only icon validation requirements to prevent visual rendering failures from unsupported or deprecated icons.
+- 🐛 **Auditor Verification Rules:** Added a mandatory icon verification section to `agents/mermaid-auditor.md` to require querying the database via `query_icons.py` and implementing standardized substitution fallbacks.
+- 🐛 **Orchestration Diagram Alignments:** Corrected deprecated and unsupported icons in `rules/agentic-orchestration-pipeline.md` (replacing `fa:robot` with `gcp:advanced-agent-modeling`, `fa:stethoscope` with `fa:circle-check`, `fa:magnifying-glass` with `fa:eye`, and `fa:graduation-cap` with `fa:lightbulb`).
+- 🐛 **Styling Guide Rules:** Added strict icon verification guidelines to `rules/mermaid-flowchart-styling.md`, establishing mandatory pre-styling checks against `icons_cache.db`.
