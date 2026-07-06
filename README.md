@@ -1,6 +1,6 @@
 # 🧜‍♂️ jk-agy-mermaid
 
-[![GitHub Release](https://img.shields.io/github/v/release/JuanKRuiz/jk-agy-mermaid?style=flat-square&color=4285F4)](https://github.com/JuanKRuiz/jk-agy-mermaid)
+[![GitHub Tag](https://img.shields.io/github/v/tag/JuanKRuiz/jk-agy-mermaid?style=flat-square&color=4285F4&label=release)](https://github.com/JuanKRuiz/jk-agy-mermaid)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-34A853?style=flat-square)](LICENSE)
 [![Antigravity Compatible](https://img.shields.io/badge/Antigravity-v2.0_Ready-FBBC04?style=flat-square)](https://antigravity.google)
 [![Antigravity CLI (agy) Compatible](https://img.shields.io/badge/agy_CLI-v2.0_Ready-EA4335?style=flat-square)](https://antigravity.google)
