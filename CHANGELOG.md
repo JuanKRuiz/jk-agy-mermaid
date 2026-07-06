@@ -16,6 +16,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ### Changed
 - 🔄 **Workflow Layout Flattening:** Flattened the repository structure by moving `references/workflows/*` directly to `workflows/*` and removing the redundant `references/` directory, updating all path references across documentation, skills, and agent instructions.
 - 🔄 **YAML Frontmatter Transition:** Replaced the deprecated class diagram single-line initialization directive (`%%{init: ...}%%`) with standard YAML Frontmatter configuration block in `skills/mermaid-designer/SKILL.md` to improve syntax compatibility and maintainability of theme variables.
+- 🔄 **README Flowchart Display Compatibility:** Converted the sample flowchart code block in `README.md` from `mermaid` to plaintext (`text`) and embedded a pre-rendered high-quality image preview to handle GitHub's native inability to load custom icons (`@{ icon: "..." }`).
+
+### Fixed
+- 🐛 **Sequence Diagram Rendering Crash:** Fixed sequence diagram rendering crash in GitHub's native Markdown viewer by replacing the ampersand character (`&`) with standard text `and` within the `README.md` sequence diagram notes.
 
 ---
 
