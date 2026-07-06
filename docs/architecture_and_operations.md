@@ -1,12 +1,12 @@
 # 🛠️ Master Architecture & Operations Guide (jk-agy-mermaid)
 
-This document provides an in-depth technical analysis, system map, and operational blueprints for the `jk-agy-mermaid` plugin. It is designed for developers, maintainers, and system operators who need to understand the underlying mechanics, databases, and closed-loop learning algorithms.
+This document provides an in-depth technical analysis, system map, and operational blueprints for the `jk-agy-mermaid` plugin. It reflects the real-world state of the plugin's structure, focusing on static database resolution and local agent injections.
 
 ---
 
 ## 🗺️ System Map & Directory Architecture
 
-The project is structured modularly to guarantee scalability, fast indexing, and complete separation of concerns:
+The project is structured modularly to guarantee scalability, fast indexing, and complete separation of concerns. Note that some local development agents are injected dynamically into the workspace, while the icon index database remains static:
 
 ```text
 jk-agy-mermaid/
@@ -14,11 +14,15 @@ jk-agy-mermaid/
 ├── README.md                   # Clean, public-facing user guide
 ├── docs/
 │   └── architecture_and_operations.md  # [This Document] In-depth technical architecture
-├── agents/                     # System Prompt definitions for Specialized Subagents
+├── .agents/                    # [GIT-IGNORED] Dynamically injected local Git agents
+│   └── agents/
+│       ├── chronicler.md       # Auto-changelog documentation manager
+│       └── git-sentinel.md     # Pre-commit & stage compliance auditor
+├── agents/                     # Versioned Antigravity system prompts
 │   ├── mermaid-auditor.md      # Esthetic consistency, contrast, and "Zero-Style" rule auditor
 │   ├── mermaid-linter-fixer.md # Preventive syntactic healer (parentheses, quotes, linkStyle)
 │   └── mermaid-learner.md      # Learning loop and icon immunity orchestrator
-├── rules/                      # Immutable operational rules and compilation policies
+├── rules/                      # Immutable operational rules and policies
 │   ├── mermaid-flowchart-styling.md  # Esthetic manual, palettes, waypoints, and subgraphs
 │   ├── mermaid-syntax-robustness.md  # Syntactic healing formulas and hierarchical flattening
 │   └── mermaid-learning-loop.md      # Sequences and protocols for rendering glitches
@@ -31,28 +35,35 @@ jk-agy-mermaid/
         │       └── fix-broken-diagram.md   # Step-by-step triage and repair guide
         ├── resources/          # Indexable data catalogs of official iconography
         │   └── databases/
+        │       ├── icons_cache.db          # [Pre-compiled] Master SQLite icons index
         │       ├── gcp_icons.json
         │       ├── aws_icons.json
         │       ├── azure_icons.json
         │       ├── svg_logos.json
         │       └── font_awesome_icons.json
         └── scripts/            # Autonomous high-speed automation scripts
-            ├── query_icons.py  # Batch-indexed icon finder (centralized SQLite)
-            └── index_icons.py  # Compiler and regenerator of the SQLite icon database
+            └── query_icons.py  # Batch-indexed icon finder (centralized SQLite)
 ```
 
 ---
 
 ## 👥 Specialized Agent Matrix
 
-To optimize cognitive load, the plugin distributes responsibility across three specialized subagents and one master skill:
+To optimize cognitive load, the plugin distributes responsibility across three versioned Antigravity agents, two git-ignored local agents, and one master skill:
 
+### 🌐 Versioned Project Agents (Included in Repo)
 | System Role | Technical Name | Primary Responsibility | Associated Rule/Asset |
 | :--- | :--- | :--- | :--- |
 | 👑 **Master Designer** | `mermaid-designer` | Skill orchestration. Translates architecture requirements into clean layouts, mapping icons, and applying hierarchical topologies. | `query_icons.py`, `draw-flowchart.md` |
 | 🎨 **Style Auditor** | `mermaid-auditor` | Guarantees visual consistency, contrast, and corporate brand palettes. Audits and removes default yellow backgrounds, and enforces "Zero-Style". | `mermaid-flowchart-styling.md` |
 | 🩺 **Syntactic Healer** | `mermaid-linter-fixer` | Analyzes code defensively. Corrects syntax, balances quotes, escapes parentheses in flowcharts, and flattens subgraphs. | `mermaid-syntax-robustness.md`, `fix-broken-diagram.md` |
-| 🧠 **Learning Manager** | `mermaid-learner` | System immunity. Classifies rendering glitches, updates blacklists, hot-patches diagrams, and regenerates the SQLite index. | `mermaid-learning-loop.md`, `index_icons.py` |
+| 🧠 **Learning Manager** | `mermaid-learner` | System immunity. Classifies rendering glitches, updates local exclusion markdown files, and hot-patches diagrams. | `mermaid-learning-loop.md` |
+
+### 🔒 Injected Local Agents (Git-Ignored / Local Environment Only)
+| System Role | Technical Name | Primary Responsibility | Interaction Target |
+| :--- | :--- | :--- | :--- |
+| 📝 **Auto-Chronicler** | `chronicler` | Audits git diffs and staging commits to automatically maintain a standardized, emoji-rich `CHANGELOG.md` following *Keep a Changelog*. | `CHANGELOG.md` |
+| 🛡️ **Git Sentinel** | `git-sentinel` | Audits staging areas, enforces Conventional Commits, prevents hardcoded secrets, and blocks versioned build artifacts. | Git Staging Area |
 
 ---
 
@@ -124,7 +135,7 @@ graph TD
     linkStyle --> Output[Clean Native Code]
 ```
 
-1.  **Grammar Triage:** If `architecture-beta`, disables parenthesis escaping to preserve the native service declarations. If `flowchart`, strict escaping is activated.
+1.  **Grammar Triage:** If `architecture-beta`, disables parenthesis escaping to preserve native service declarations. If `flowchart`, strict escaping is activated.
 2.  **Literal Balancing:** Repairs open quotes and injects missing delimiters.
 3.  **Subgraph Flattening:** If nesting depth > 2, it elevates third-level components to the second level to prevent box warping in the ELK renderer.
 4.  **linkStyle Semicolon Removal:** Locates `linkStyle` expressions and removes any trailing semicolon `;`.
@@ -133,9 +144,11 @@ graph TD
 
 ## ⚡ High-Speed SQLite Search Engine
 
-To avoid slow sequential lookups across individual Markdown files, the plugin implements a centralized, pre-populated **SQLite3** index database (`icons_cache.db`).
+To avoid slow sequential lookups across individual Markdown files or slow network resolutions, the plugin utilizes a pre-populated, static **SQLite3** index database (`icons_cache.db`) built as a core resource asset. 
 
-### 1. Batch Search (One-Shot Batching)
+**This database is static and immutable within the plugin distribution.** It is loaded directly by the query engine and is not compiled, written, or regenerated during runtime.
+
+### Batch Search (One-Shot Batching)
 To optimize agent execution times, a single consolidated call must be made with all keywords:
 
 ```bash
@@ -155,13 +168,6 @@ The script queries the local SQLite database and returns a structured JSON map:
     "is_style_compatible": 0
   }
 }
-```
-
-### 2. Database Re-Indexing
-When updating icon lists or exceptions in `special-icon-cases.md`, the SQLite database is compiled and regenerated using:
-
-```bash
-python3 jk-agy-mermaid/skills/mermaid-designer/scripts/index_icons.py
 ```
 
 ---
@@ -191,9 +197,8 @@ The `mermaid-learner` agent governs permanent visual immunity under the followin
              └── Remove the conflicting color class from the node.
                                 │
                                 ▼
-             Step 5: Re-Indexing and Professional Reporting
-             ├── Execute "index_icons.py" to apply database changes.
-             └── Present report to the user with the updated cases
+             Step 5: Professional Reporting
+             └── Present report to the user with the updated local cases
                  file and the exact Git Diff of applied changes.
 ```
 

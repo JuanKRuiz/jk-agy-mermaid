@@ -46,8 +46,6 @@ This skill organizes its knowledge assets progressively. Depending on the type o
     2.  **Exact Code Query Mode:**
         `python3 jk-agy-mermaid/skills/mermaid-designer/scripts/query_icons.py --code "<exact icon code>"`
         *Description:* Returns the complete metadata of a unique icon in JSON format to verify if it is style-compatible (`is_style_compatible`), blacklisted (`is_blacklisted`), or has substitutes.
-*   **Database Compiler:** `python3 jk-agy-mermaid/skills/mermaid-designer/scripts/index_icons.py`
-    *   *Usage:* Regenerates and updates the unified SQLite cache `icons_cache.db` from the Markdown lists in the workspace and the exception file `special-icon-cases.md`.
 
 ### C. Data Resources and Catalogs (Resources)
 *   **JSON Icon Databases:**
@@ -57,7 +55,7 @@ This skill organizes its knowledge assets progressively. Depending on the type o
     *   `resources/databases/svg_logos.json` (SaaS, Brands, and Consolidated Technologies)
     *   `resources/databases/font_awesome_icons.json` (Standard Favicons)
 *   **Special Icon Cases:** [../../../../LLM/valid-icons-lists/special-icon-cases.md](../../../../LLM/valid-icons-lists/special-icon-cases.md)
-    *   *Usage:* Unified registry of icons with vector issues (Zero-Style), recommended substitutions, and non-existent or deprecated icons (Blacklist). The search engine compiles it automatically to update the local database attributes.
+    *   *Usage:* Unified registry of icons with vector issues (Zero-Style), recommended substitutions, and non-existent or deprecated icons (Blacklist). The query engine and visual rules process these exceptions directly to apply correct branding and hot-patches on the fly.
 
 ---
 
