@@ -73,9 +73,9 @@ python3 skills/mermaid-designer/scripts/query_icons.py --batch "load balancer" "
 ```
 
 ### 3. Example Prompt for your Agent
-Once installed, your Antigravity agent becomes a Master Designer. You can interact with it in Spanglish or Spanish, and it will output standard English diagrams:
+Once installed, your Antigravity agent becomes a Master Designer. You can prompt it with detailed instructions, and it will output standard, production-ready diagrams:
 
-> *"Diséñame un diagrama TD con subgrafos que muestre un cliente móvil conectándose a través de un Load Balancer a un App Engine y finalmente guardando datos en BigQuery. Asegúrate de usar los iconos oficiales y seguir la paleta GCP-First."*
+> *"Design me a TD diagram with subgraphs showing a mobile client connecting through a Load Balancer to an App Engine, and finally saving data to BigQuery. Make sure to use official icons and follow the GCP-First palette."*
 
 ---
 
@@ -123,7 +123,7 @@ flowchart TD
 
 💡 *Note: Because GitHub's native Markdown viewer does not support custom icon loading (`@{ icon: "..." }`), here is how the diagram renders inside an Antigravity or standard Mermaid-supported editor/viewer:*
 
-![Rendered Diagram Preview](img/img-readme-1.png)
+![Rendered Diagram Preview](img/img-readme-1.webp)
 
 ---
 
