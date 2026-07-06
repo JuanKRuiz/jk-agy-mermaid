@@ -123,7 +123,7 @@ flowchart TD
 
 💡 *Note: Because GitHub's native Markdown viewer does not support custom icon loading (`@{ icon: "..." }`), here is how the diagram renders inside an Antigravity or standard Mermaid-supported editor/viewer:*
 
-![Rendered Diagram Preview](img/img-readme-1.webp)
+<img src="img/img-readme-1.webp" alt="Rendered Diagram Preview" width="50%" />
 
 ---
 
