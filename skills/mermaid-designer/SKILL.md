@@ -23,12 +23,13 @@ This skill organizes its knowledge assets progressively. Depending on the type o
 *   **Indexed Icon Finder (MANDATORY):** 
     To avoid slow or outdated sequential searches, you must use the fast search engine over the SQLite database. **IT IS STRICTLY FORBIDDEN** to run manual SQL queries by writing inline terminal code like `python3 -c "import sqlite3; ..."` to connect to the database, and it is **FORBIDDEN** to run discovery or help commands (`--help`). You must exclusively use the authorized encapsulated script with its exact signatures.
     
-    Authorized execution path from the root of the workspace where the plugin is installed:
-    - **Plugin Autonomous Script:** `python3 jk-agy-mermaid/skills/mermaid-designer/scripts/query_icons.py`
+    Authorized execution path based on current directory context:
+    - **From the Plugin Root Directory:** `python3 skills/mermaid-designer/scripts/query_icons.py`
+    - **From a Parent Workspace Directory:** `python3 jk-agy-mermaid/skills/mermaid-designer/scripts/query_icons.py`
     
     This script accesses the plugin's central SQLite cache and supports the following high-speed operational signatures:
     1.  **Batch Mode (MANDATORY for diagrams):**
-        `python3 jk-agy-mermaid/skills/mermaid-designer/scripts/query_icons.py --batch "<term 1>" "<term 2>" ...`
+        `python3 [path/to/]skills/mermaid-designer/scripts/query_icons.py --batch "<term 1>" "<term 2>" ...`
         *Description:* Resolves multiple concepts in a single agent turn. Returns a JSON map where each key is the search term and the value is the icon with the highest heuristic relevance and its full metadata. Abbreviations such as `--batc` are not allowed (it must be exactly `--batch`).
         *Example output:*
         ```json
@@ -54,7 +55,7 @@ This skill organizes its knowledge assets progressively. Depending on the type o
     *   `resources/databases/azure_icons.json` (Microsoft Azure)
     *   `resources/databases/svg_logos.json` (SaaS, Brands, and Consolidated Technologies)
     *   `resources/databases/font_awesome_icons.json` (Standard Favicons)
-*   **Special Icon Cases:** [../../../../LLM/valid-icons-lists/special-icon-cases.md](../../../../LLM/valid-icons-lists/special-icon-cases.md)
+*   **Special Icon Cases:** [resources/special-icon-cases.md](resources/special-icon-cases.md)
     *   *Usage:* Unified registry of icons with vector issues (Zero-Style), recommended substitutions, and non-existent or deprecated icons (Blacklist). The query engine and visual rules process these exceptions directly to apply correct branding and hot-patches on the fly.
 
 ---

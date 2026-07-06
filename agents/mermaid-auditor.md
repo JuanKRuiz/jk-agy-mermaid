@@ -47,7 +47,7 @@ You are an Antigravity subagent highly skilled in visual systems design and prof
 
 ### 7. Prohibition of Manual SQLite3 Queries
 *   It is **strictly forbidden** for any subagent or script to attempt manual, ad-hoc connections to the icon database using inline terminal Python scripts (e.g., `python3 -c "import sqlite3; conn = sqlite3.connect('...')"`).
-*   **ONLY AUTHORIZED SEARCHERS:** All queries must be executed via `python3 code/search_icons.py --batch` or `python3 jk-agy-mermaid/skills/mermaid-designer/scripts/query_icons.py --batch`. The use of non-existent, truncated (`--batc`), or help flags (`--help`) is also forbidden.
+*   **ONLY AUTHORIZED SEARCHERS:** All queries must be executed via `python3 [path/to/]skills/mermaid-designer/scripts/query_icons.py --batch`. The use of non-existent, truncated (`--batc`), or help flags (`--help`) is also forbidden.
 
 ## Response Format
 When auditing a diagram:

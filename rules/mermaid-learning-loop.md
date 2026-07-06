@@ -48,19 +48,19 @@ Analyze the reported symptom to classify the error into one of these two categor
 *   **Type B (Contrast Glitch / Black Box):** The icon renders, but appears distorted, covered by the node's background color, or inside a solid block due to the CSS injection of an inappropriate class.
 
 ### Step 2: Finding a Viable Alternative (For Type A)
-Using exclusively the authorized native command tool `python3 jk-agy-mermaid/skills/mermaid-designer/scripts/query_icons.py --batch "<term>"` or `grep_search` over local databases, the agent must perform queries for similar keywords (e.g., if Weaviate fails, search for "vector database" or "pinecone"). **It is strictly forbidden** to run manual SQLite SQL queries with `python3 -c "import sqlite3; ..."` from the terminal, or to use unsupported/help flags.
+Using exclusively the authorized native command tool `python3 [path/to/]skills/mermaid-designer/scripts/query_icons.py --batch "<term>"` or `grep_search` over local databases, the agent must perform queries for similar keywords (e.g., if Weaviate fails, search for "vector database" or "pinecone"). **It is strictly forbidden** to run manual SQLite SQL queries with `python3 -c "import sqlite3; ..."` from the terminal, or to use unsupported/help flags.
 
 ### Step 3: Updating Plugin Knowledge Assets
 The agent must perform hot modifications on the unified configuration file:
-*   **Type A:** Add the disapproval entry under section "**3. Exclusion List (Blacklist)**" of `LLM/valid-icons-lists/special-icon-cases.md` detailing the reason and suggested alternative.
-*   **Type B:** Add the icon identifier or exact pattern under section "**1. Icons with Vector Problems (Zero-Style Rule)**" of `LLM/valid-icons-lists/special-icon-cases.md`, permanently forbidding any association with background color styles.
+*   **Type A:** Add the disapproval entry under section "**3. Exclusion List (Blacklist)**" of `skills/mermaid-designer/resources/special-icon-cases.md` detailing the reason and suggested alternative.
+*   **Type B:** Add the icon identifier or exact pattern under section "**1. Icons with Vector Problems (Zero-Style Rule)**" of `skills/mermaid-designer/resources/special-icon-cases.md`, permanently forbidding any association with background color styles.
 
 ### Step 4: Hot-Patching the Diagram (.mmd)
 The agent opens the affected `.mmd` file and applies the exact corrective measure (replaces the icon with the substitute, or removes the background color class from the node).
 
 ### Step 5: Re-Indexing and Professional Report
-*   Execute `python3 jk-agy-mermaid/skills/mermaid-designer/scripts/index_icons.py` (if applicable) or query tools to ensure SQLite database reflects changes.
+*   Execute `python3 [path/to/]skills/mermaid-designer/scripts/index_icons.py` (if applicable) or query tools to ensure SQLite database reflects changes.
 *   Present a confirmation to the user detailing:
-    1.  Which knowledge assets were updated (`LLM/valid-icons-lists/special-icon-cases.md`).
+    1.  Which knowledge assets were updated (`skills/mermaid-designer/resources/special-icon-cases.md`).
     2.  Why this technical decision was made.
     3.  A **Git Diff** block showing exactly the changes made to the source diagram `.mmd` file.
