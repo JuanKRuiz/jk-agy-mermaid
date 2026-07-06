@@ -130,8 +130,8 @@ graph TD
     Flatten -- Yes --> Elevate[Elevate 3rd level to 2nd level]
     Flatten -- No --> KeepHierarchy[Keep Hierarchies]
     
-    Elevate & KeepHierarchy --> linkStyle[Heal linkStyle: Remove Trailing Semicolons]
-    linkStyle --> Output[Clean Native Code]
+    Elevate & KeepHierarchy --> HealLinkStyle[Heal linkStyle: Remove Trailing Semicolons]
+    HealLinkStyle --> Output[Clean Native Code]
 ```
 
 1.  **Grammar Triage:** If `architecture-beta`, disables parenthesis escaping to preserve native service declarations. If `flowchart`, strict escaping is activated.
