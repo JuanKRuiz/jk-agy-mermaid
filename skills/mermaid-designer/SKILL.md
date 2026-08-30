@@ -49,14 +49,8 @@ This skill organizes its knowledge assets progressively. Depending on the type o
         *Description:* Returns the complete metadata of a unique icon in JSON format to verify if it is style-compatible (`is_style_compatible`), blacklisted (`is_blacklisted`), or has substitutes.
 
 ### C. Data Resources and Catalogs (Resources)
-*   **JSON Icon Databases:**
-    *   `resources/databases/gcp_icons.json` (Google Cloud Platform)
-    *   `resources/databases/aws_icons.json` (Amazon Web Services)
-    *   `resources/databases/azure_icons.json` (Microsoft Azure)
-    *   `resources/databases/svg_logos.json` (SaaS, Brands, and Consolidated Technologies)
-    *   `resources/databases/font_awesome_icons.json` (Standard Favicons)
 *   **Encapsulated SQLite Index (`icons_cache.db`):** [resources/databases/icons_cache.db](resources/databases/icons_cache.db)
-    *   *Usage:* Central SQLite database cache compiling all icon metadata including category, file path, line numbers, descriptions, style compatibility flags, blacklist flags, and recommended substitute codes. Future exceptions are written directly to this index.
+    *   *Usage:* Central, pre-populated SQLite database cache compiling all icon metadata across Google Cloud Platform (GCP), Amazon Web Services (AWS), Microsoft Azure, SVG Logos (SaaS and technology brands), and Font Awesome. Includes categories, file paths, line numbers, descriptions, style compatibility flags, blacklist flags, and recommended substitute codes. Future exceptions and updates are written directly to this index.
 
 ---
 
@@ -72,7 +66,7 @@ This skill automatically activates when any of the following conversation contex
 
 ## 3. Mandatory Operational Principles
 
-1.  **Native UTF-8 (Spanish Resilience):** All scripts, files, and JSON databases of this skill must be read and written forcing UTF-8 encoding, ensuring that the plugin works regardless of whether the paths contain Spanish-specific characters (such as `/mnt/d/Gemini/Gráficas Mermaid`).
+1.  **Native UTF-8 (Spanish Resilience):** All scripts, database records, and files of this skill must be read and written forcing UTF-8 encoding, ensuring that the plugin works regardless of whether the paths contain Spanish-specific characters (such as `/mnt/d/Gemini/Gráficas Mermaid`).
 2.  **No Markdown-Wrappers on Export:** Any direct export or modification of `.mmd` files must be pure native Mermaid code, without wrapping it in Markdown code blocks (```), allowing external tools to render it directly.
 3.  **Style Compliance and Exceptions:** Strictly apply the Zero-Style directive to multi-colored icons (AWS, Azure, Logos, and special GCP exceptions) to preserve the visual integrity of their SVGs, reserving aesthetic classes only for stable GCP and Font Awesome icons.
 4.  **Strict Sibling Creation Policy:** When optimizing, improving, or refactoring an existing diagram (e.g., `folder/filename.mmd`), it is **strictly forbidden** to modify or overwrite the original file. Instead, you must **always create a new file** in the same folder as the original, renaming it with the suffix `_improved.mmd` or `_optimized.mmd` (e.g., `folder/filename_improved.mmd`).

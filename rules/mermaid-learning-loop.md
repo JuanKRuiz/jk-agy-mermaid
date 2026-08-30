@@ -25,7 +25,7 @@ sequenceDiagram
 
     alt Scenario A: Non-existent icon (Code ?)
         note over Learner: Step 2: Indexed Search for Substitute
-        Learner->>Learner: Execute query on SQLite DB (grep_search)
+        Learner->>Learner: Execute query with query_icons.py
         Learner->>DB: Run update_icon.py --blacklist <icon_code> 1
         Learner->>TargetMMD: Hot-patch the .mmd replacing the obsolete icon
     else Scenario B: Coloring interference (Black / Opaque Box)
@@ -47,7 +47,7 @@ Analyze the reported symptom to classify the error into one of these two categor
 *   **Type B (Contrast Glitch / Black Box):** The icon renders, but appears distorted, covered by the node's background color, or inside a solid block due to the CSS injection of an inappropriate class.
 
 ### Step 2: Finding a Viable Alternative (For Type A)
-Using exclusively the authorized native command tool `python3 [path/to/]skills/mermaid-designer/scripts/query_icons.py --batch "<term>"` or `grep_search` over local databases, the agent must perform queries for similar keywords (e.g., if Weaviate fails, search for "vector database" or "pinecone"). **It is strictly forbidden** to run manual SQLite SQL queries with `python3 -c "import sqlite3; ..."` from the terminal, or to use unsupported/help flags.
+Using exclusively the authorized native command tool `python3 [path/to/]skills/mermaid-designer/scripts/query_icons.py --batch "<term>"` or standard keyword queries, the agent must search for similar concepts (e.g., if Weaviate fails, search for "vector database" or "pinecone"). **It is strictly forbidden** to run manual SQLite SQL queries with `python3 -c "import sqlite3; ..."` from the terminal, or to use unsupported/help flags.
 
 ### Step 3: Updating Plugin Knowledge Assets (SQLite Cache)
 The agent must execute the database updater CLI to set appropriate status flags:

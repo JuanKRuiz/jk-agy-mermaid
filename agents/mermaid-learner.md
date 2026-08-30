@@ -15,9 +15,9 @@ When the user reports issues with a diagram, analyze the symptom:
 *   **Type B Failure (Coloring Glitch / Solid Box):** The icon is displayed, but appears distorted or covered by a black or colored box due to the CSS injection of an inappropriate class.
 
 ### 2. Resolution of Type A Failures (Missing Icons)
-1.  **Execute Search:** Use the `run_command` tool to run the fast icon search script using the `--batch` flag (it is **STRICTLY FORBIDDEN** to execute manual SQLite3 commands like `python3 -c "import sqlite3; ..."` from the terminal to interact with the database, and it is **FORBIDDEN** to run incomplete or help commands like `--help`):
+1.  **Execute Search:** Use the `run_command` tool to run the fast icon search script using the `--batch` flag or standard keyword query (it is **STRICTLY FORBIDDEN** to execute manual SQLite3 commands like `python3 -c "import sqlite3; ..."` from the terminal to interact with the database, and it is **FORBIDDEN** to run incomplete or help commands like `--help`):
     `python3 [path/to/]skills/mermaid-designer/scripts/query_icons.py --batch "<search term>"`
-    (Alternatively, you can rely on the `grep_search` tool over local databases searching for keywords of substitute services, e.g., if `logos:weaviate` fails, search for "vector database" or "pinecone").
+    (For example, if `logos:weaviate` fails, query for substitute concepts such as `"vector database"` or `"pinecone"`).
 2.  **Update Knowledge:**
     *   Execute the database update utility to blacklist the obsolete icon code:
         `python3 [path/to/]skills/mermaid-designer/scripts/update_icon.py --blacklist <icon_code> 1`

@@ -14,6 +14,7 @@ import os
 import sys
 import json
 import sqlite3
+import re
 from pathlib import Path
 
 # Category configuration and priorities
@@ -24,17 +25,28 @@ CATEGORY_ORDER = [
     ("Others", "other")
 ]
 
+# Stop words for Spanish and English natural language diagramming queries
+SPANISH_STOP_WORDS = {"el", "la", "los", "las", "un", "una", "unos", "unas", "de", "del", "al", "en", "para", "por", "con", "y", "o", "a"}
+ENGLISH_STOP_WORDS = {"the", "a", "an", "of", "for", "to", "in", "on", "and", "or", "with", "by", "at"}
+STOP_WORDS = SPANISH_STOP_WORDS | ENGLISH_STOP_WORDS
+
 def clean_code(code_str):
     """
-    Cleans the icon code from backticks and quotes.
+    Cleans the icon code or query term from wrapping backticks, quotes, and punctuation brackets.
     E.g.: "`gcp:compute-engine`" -> "gcp:compute-engine"
+          "(docker)" -> "docker"
+          "salesforce!" -> "salesforce"
     """
-    return code_str.replace("`", "").replace("'", "").replace('"', "").strip()
+    if not code_str:
+        return ""
+    stripped = code_str.strip(" \t\n\r`'\"()[]{},;!?")
+    return stripped.replace("`", "").replace("'", "").replace('"', "").strip()
 
 def get_icon_by_code(conn, icon_code):
     """
     Retrieves complete information of an icon by its exact code.
     """
+    icon_code = clean_code(icon_code)
     cursor = conn.cursor()
     try:
         cursor.execute("""
@@ -60,54 +72,71 @@ def get_icon_by_code(conn, icon_code):
         pass
     return None
 
-def calculate_relevance(item, query_words):
+def calculate_relevance(item, query_words, original_query=""):
     def normalize(text):
-        return text.lower().replace("-", " ").replace(":", " ").strip()
+        if not text:
+            return ""
+        return re.sub(r'[^\w]+', ' ', text, flags=re.UNICODE).lower().strip()
         
     code_norm = normalize(item["code"])
     name_norm = normalize(item["name"])
-    desc_norm = normalize(item["description"])
+    desc_norm = normalize(item.get("description", "") or "")
     
     score = 0
-    query_str = " ".join(query_words)
-    query_norm = normalize(query_str)
+    clean_words = [w for w in query_words if w.lower() not in STOP_WORDS]
+    phrase = " ".join(clean_words) if clean_words else (original_query if original_query else " ".join(query_words))
+    phrase_norm = normalize(phrase)
     
-    if query_norm == name_norm or query_norm == code_norm:
+    if phrase_norm and (phrase_norm == name_norm or phrase_norm == code_norm):
         score += 1000
-    elif query_norm in name_norm:
+    elif phrase_norm and (f" {phrase_norm} " in f" {name_norm} " or phrase_norm in name_norm):
         score += 500
-    elif query_norm in code_norm:
+        # Brevity bonus: prefer concise, exact matches over verbose names containing the term
+        score += int((len(phrase_norm) / max(len(name_norm), 1)) * 50)
+    elif phrase_norm and (f" {phrase_norm} " in f" {code_norm} " or phrase_norm in code_norm):
         score += 300
+        score += int((len(phrase_norm) / max(len(code_norm), 1)) * 30)
+    elif phrase_norm and (f" {phrase_norm} " in f" {desc_norm} "):
+        score += 200
+        score += int((len(phrase_norm) / max(len(desc_norm), 1)) * 30)
         
     for word in query_words:
         word_norm = normalize(word)
         if not word_norm:
             continue
             
+        is_short = len(word_norm) <= 2
         if word_norm == name_norm or f" {word_norm} " in f" {name_norm} ":
             score += 100
-        elif word_norm in name_norm:
+        elif not is_short and word_norm in name_norm:
             score += 50
             
         if word_norm == code_norm or f" {word_norm} " in f" {code_norm} ":
             score += 80
-        elif word_norm in code_norm:
+        elif not is_short and word_norm in code_norm:
             score += 40
             
         if f" {word_norm} " in f" {desc_norm} ":
             score += 20
-        elif word_norm in desc_norm:
+        elif not is_short and word_norm in desc_norm:
             score += 10
             
     return score
 
 def query_single(conn, query_words):
-    cursor = conn.cursor()
     results = {cat: [] for _, cat in CATEGORY_ORDER}
+    if not query_words:
+        return results
+
+    cursor = conn.cursor()
+    
+    # Filter stop words if other descriptive words exist
+    meaningful_words = [w for w in query_words if w.lower() not in STOP_WORDS]
+    search_words = meaningful_words if meaningful_words else query_words
     
     conditions = []
     params = []
-    for word in query_words:
+    for word in search_words:
         conditions.append("search_text LIKE ?")
         params.append(f"%{word}%")
         
@@ -174,9 +203,10 @@ def main():
     is_batch = sys.argv[1] == "--batch"
     is_code = sys.argv[1] == "--code"
 
-    # Determine plugin database file path in an encapsulated manner
+    # Determine plugin database file path in an encapsulated manner (with env var override support)
     script_dir = Path(__file__).resolve().parent
-    db_path = (script_dir / ".." / "resources" / "databases" / "icons_cache.db").resolve()
+    env_db = os.environ.get("ICONS_DB_PATH")
+    db_path = Path(env_db).resolve() if env_db else (script_dir / ".." / "resources" / "databases" / "icons_cache.db").resolve()
 
     if not db_path.exists():
         print(f"Error: Pre-populated SQLite database was not found at {db_path}", file=sys.stderr)
@@ -194,17 +224,23 @@ def main():
         batch_results = {}
 
         for term in batch_terms:
-            query_words = [w.lower() for w in term.split() if w.strip()]
+            cleaned_term = clean_code(term)
+            query_words = [w.lower() for w in cleaned_term.split() if w.strip()]
             if not query_words:
                 continue
 
             results = query_single(conn, query_words)
 
+            candidates = []
+            for cat_idx, (_, cat) in enumerate(CATEGORY_ORDER):
+                for item in results.get(cat, []):
+                    score = calculate_relevance(item, query_words, original_query=cleaned_term)
+                    candidates.append((score, -cat_idx, item))
+
             best_match = None
-            for _, cat in CATEGORY_ORDER:
-                if results.get(cat):
-                    best_match = results[cat][0]
-                    break
+            if candidates:
+                candidates.sort(key=lambda x: (x[0], x[1]), reverse=True)
+                best_match = candidates[0][2]
 
             batch_results[term] = best_match
 
@@ -216,12 +252,12 @@ def main():
             conn.close()
             sys.exit(1)
 
-        icon_code = sys.argv[2].strip()
+        icon_code = clean_code(sys.argv[2])
         icon_data = get_icon_by_code(conn, icon_code)
         print(json.dumps(icon_data, indent=2, ensure_ascii=False))
 
     else:
-        term_str = " ".join(sys.argv[1:])
+        term_str = clean_code(" ".join(sys.argv[1:]))
         query_words = [w.lower() for w in term_str.split() if w.strip()]
 
         if not query_words:

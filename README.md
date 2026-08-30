@@ -138,6 +138,6 @@ For a detailed walkthrough of the internal mechanics, agent matrix roles, lintin
 
 ## 🤝 Contribution & License
 
-This project is open-source and released under the **MIT License**. Contributions, bug reports, and suggestions for new cloud brand icons are highly welcome! 
+This project is open-source and released under the **Creative Commons Attribution 4.0 International Public License (CC BY 4.0)**. Contributions, bug reports, and suggestions for new cloud brand icons are highly welcome! 
 
 *Developed with passion for the Antigravity community by JuanK Ruiz.*

@@ -30,14 +30,10 @@ jk-agy-mermaid/
         │   └── fix-broken-diagram.md   # Step-by-step triage and repair guide
         ├── resources/          # Indexable data catalogs of official iconography
         │   └── databases/
-        │       ├── icons_cache.db          # [Pre-compiled] Master SQLite icons index
-        │       ├── gcp_icons.json
-        │       ├── aws_icons.json
-        │       ├── azure_icons.json
-        │       ├── svg_logos.json
-        │       └── font_awesome_icons.json
+        │       └── icons_cache.db          # [Pre-compiled] Master SQLite icons index (GCP, AWS, Azure, Logos, FA)
         └── scripts/            # Autonomous high-speed automation scripts
-            └── query_icons.py  # Batch-indexed icon finder (centralized SQLite)
+            ├── query_icons.py  # Batch-indexed icon finder (relevance-first SQLite query engine)
+            └── update_icon.py  # Status updater for blacklist, style compatibility, and substitutions
 ```
 
 ---

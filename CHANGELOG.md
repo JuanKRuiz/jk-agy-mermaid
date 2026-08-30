@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Fixed
+- 🐛 **Category Prioritization Masking in Batch Search (`query_icons.py`):** Resolved relevance masking where higher-priority categories (cloud) superseded exact or high-relevance matches in subsequent categories (SVG logos, Font Awesome). Implemented global candidate relevance ranking with category priority tie-breaking and brevity ratio bonus.
+- 🐛 **Natural Language & Stop Words Resolution (`query_icons.py`):** Added intelligent filtering of Spanish and English stop words (`el`, `la`, `de`, `para`, etc.) in multi-word queries, whole-word boundary enforcement for short tokens (<= 2 chars), and whole-phrase description bonuses. Multi-word phrases like `"el balanceador de carga"`, `"la base de datos"`, and `"el usuario"` now reliably resolve to load balancers, databases, and user icons instead of coincidental substring matches.
+- 🐛 **Syntax Robustness on Empty Queries (`query_icons.py`):** Guarded `query_single()` against empty query words, returning an empty result set immediately without executing malformed SQL (`WHERE  AND is_blacklisted = 0`) or swallowing exceptions.
+- 🐛 **Validation and Silent Failure Prevention (`update_icon.py`):** Added explicit `cursor.rowcount` validation so attempts to update non-existent icon codes fail with an informative error on stderr and exit code 1. Enforced strict binary validation (`0` or `1`) on `--blacklist` and `--style-compatible` flags. Fixed `--substitute` missing argument bug where passing fewer than 4 arguments silently cleared substitute codes; added validation that substitute icon codes exist in the database.
+- 🐛 **Code Input Sanitization (`query_icons.py` & `update_icon.py`):** Integrated enhanced `clean_code()` across all CLI modes to automatically strip surrounding punctuation, brackets, parentheses, backticks, and quotes from icon codes and query terms (e.g. `(docker)`, `salesforce!`, `[python]`).
+- 🛡️ **Test Database Isolation (`query_icons.py` & `update_icon.py`):** Added `ICONS_DB_PATH` environment variable override support to both CLIs, enabling the test suite to execute against an isolated temporary database copy without polluting or mutating the production `icons_cache.db`.
+
+### Changed
+- 🛡️ **Deduplicate Taxonomic Redundancies & Enforce Uniqueness (`icons_cache.db`):** Consolidated 389 duplicate icon code groups (410 redundant rows) across `logos:*` categories, merged search keyword vocabularies into the primary records, applied `CREATE UNIQUE INDEX idx_icons_code ON icons(code)`, and reclaimed ~356 KB of disk space via SQLite `VACUUM`.
+- 📚 **Documentation & License Harmonization:** Aligned open-source license statement in `README.md` to Creative Commons Attribution 4.0 International Public License (`CC BY 4.0`) matching `LICENSE` and badge. Removed references to nonexistent JSON database files from `SKILL.md` and `docs/architecture_and_operations.md`, and registered `update_icon.py` in the directory architecture tree.
+
 ---
 
 ## [1.1.0] - 2026-07-05
