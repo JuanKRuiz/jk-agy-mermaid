@@ -114,7 +114,18 @@ If working on an already created or pre-existing diagram (e.g., modifying, optim
 
 #### Step 4: Complexity Reduction with Waypoints or Junction Buses
 *   Evaluate diagram density. If crossings exceed 4 or connectors traverse multiple intermediate subgraphs:
-    *   **Waypoints (Circular Teleporters):** Replace spaghetti lines with neat local circle nodes at the source and destination (e.g., `wpA(((A))):::wp_blue`).
+    *   **True Teleporter Waypoints (Off-Page Ports):** Decouple dense architectural tiers (e.g. strategic upper tier vs. technical lower tier) using paired concentric circular ports `(((X)))`:
+        *   **The Decoupling Rule (STRICTLY NON-NEGOTIABLE):** A waypoint is an off-page teleporter, **NOT** an intermediate node connected by lines. It is **STRONGLY FORBIDDEN** to draw a line or arrow between waypoints (`wpA_src ==> wpA_dst` or `wpA_src --> wpA_dst` is strictly prohibited). Drawing an edge between waypoints breaks layout independence, reintroduces cross-cluster compound edges, and causes massive vertical stretching in Dagre/ELK.
+        *   **Canonical Wiring Pattern:**
+            ```mermaid
+            %% Upper Tier: routes into exit port
+            source_node --> wpA_src(((A))):::wp_blue
+
+            %% Lower Tier: starts from entry port (ZERO physical edge between wpA_src and wpA_dst!)
+            wpA_dst(((A))):::wp_blue --> dest_node
+            ```
+        *   **Diameter Optimization via Multi-Line Tokenization:** Circular nodes `(((...)))` size their diameter based on the longest single line of text. **Never put multiple words on a single line**. Always format labels as single letters `(((A)))` or break words across multiple lines using `<br>` (max 1 word per line, e.g. `((("🛰️<br>Store<br>Gate")))`) to maintain a compact, balanced node size.
+        *   **Semantic Color Classes:** Apply standard waypoint classes (`:::wp_blue` for mandate/traffic, `:::wp_green` for governance/security, `:::wp_yellow` for packaging/auth, `:::wp_red` for PRR gates/alerts, `:::wp_dark` for data layer).
     *   **Junction Bus Pattern:** Consolidate multiple parallel connections pointing to a single subgraph into a single entry `junction` gateway node, avoiding crossed line clutter.
 
 #### Step 5: Syntactic Linter Pass (`mermaid-linter-fixer`)

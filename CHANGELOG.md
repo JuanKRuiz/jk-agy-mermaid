@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Added
+- 🛡️ **True Teleporter Waypoints Governance:** Formalized the True Teleporter Waypoint standard across `mermaid-flowchart-styling.md`, `mermaid-syntax-robustness.md`, `skills/mermaid-designer/SKILL.md`, `mermaid-linter-fixer.md`, and `mermaid-auditor.md`. Mandated zero physical cross-cluster connecting lines between waypoints to guarantee decoupled layout and compact geometry. Enforced multi-line tokenization (`<br>`) to optimize circle diameter.
+- ⚡ **Auto-Activation YAML Frontmatter:** Injected standard Jetski/Antigravity `trigger: model_decision` YAML frontmatter headers with descriptive triggers across all plugin rule files (`mermaid-flowchart-styling.md`, `mermaid-syntax-robustness.md`, `agentic-orchestration-pipeline.md`, `mermaid-learning-loop.md`), ensuring automatic discovery and progressive disclosure by the model in system prompts.
+
 ### Fixed
 - 🐛 **Category Prioritization Masking in Batch Search (`query_icons.py`):** Resolved relevance masking where higher-priority categories (cloud) superseded exact or high-relevance matches in subsequent categories (SVG logos, Font Awesome). Implemented global candidate relevance ranking with category priority tie-breaking and brevity ratio bonus.
 - 🐛 **Natural Language & Stop Words Resolution (`query_icons.py`):** Added intelligent filtering of Spanish and English stop words (`el`, `la`, `de`, `para`, etc.) in multi-word queries, whole-word boundary enforcement for short tokens (<= 2 chars), and whole-phrase description bonuses. Multi-word phrases like `"el balanceador de carga"`, `"la base de datos"`, and `"el usuario"` now reliably resolve to load balancers, databases, and user icons instead of coincidental substring matches.

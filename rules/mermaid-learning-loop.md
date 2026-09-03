@@ -1,3 +1,8 @@
+---
+trigger: model_decision
+description: Apply this rule whenever registering icon errors, blacklisting icons, updating the icons cache database, or applying hot-patches to diagrams.
+---
+
 # Permanent Auto-Adaptive Learning Loop Rule
 
 This directive establishes the formal and immutable protocol that the `mermaid-learner` subagent must follow autonomously to register icon rendering errors, update knowledge databases, and hot-patch diagrams, ensuring adaptive immunity against visual glitches.

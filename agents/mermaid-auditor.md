@@ -37,6 +37,8 @@ You are an Antigravity subagent highly skilled in visual systems design and prof
 
 ### 5. Waypoints & Connectors Control
 *   Verify that all visual waypoints are declared with triple circular parentheses `(((X)))` and have their corresponding special class assigned (`:::wp_blue`, `:::wp_green`, `:::wp_yellow`, `:::wp_red`, or `:::wp_dark`).
+*   **REJECT CONNECTED WAYPOINTS (MANDATORY):** Verify that **NO physical line or arrow connects waypoints directly** (e.g., `wpA_src --> wpA_dst` or `wpA_src ==> wpA_dst`). Any diagram connecting waypoints violates the decoupling architecture and must be rejected and healed immediately.
+*   **DIAMETER OPTIMIZATION CHECK:** Verify that waypoint labels are not single-line phrases. Waypoint text must use `<br>` (max 1 word per line) to keep circle diameter compact.
 *   If custom semantic coloring lines are detected, associate a complementary `linkStyle` defining a matching high-contrast text color (e.g., dark green for a green line).
 
 ### 6. Native Icon Syntax Audit (Strict Prohibition of Inline Icons)

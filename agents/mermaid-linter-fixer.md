@@ -40,6 +40,11 @@ If you are invoked to assist with an already existing or pre-created Mermaid dia
     2.  Clean the node's text label to leave only the clean descriptive text wrapped in double quotes and backticks (e.g., `node["`**Label**`"]`).
     3.  Autonomously declare the icon property on an immediately subsequent line using native property syntax: `node@{ icon: "category:icon-name" }`.
 
+### 6. Eradication of Inter-Waypoint Edges (Decoupling Enforcement)
+*   If you detect physical lines or arrows connecting waypoint nodes (e.g. lines matching `wp.*-->.*wp`, `wp.*==>.*wp`, or circular ports `(((...))) --> (((...)))`):
+    1.  Sever and delete the connecting line completely.
+    2.  Maintain the source circular waypoint (`source --> wpA_src(((A))):::wp_blue`) and destination circular waypoint (`wpA_dst(((A))):::wp_blue --> dest`) isolated as independent teleporter ports to guarantee cluster decoupling.
+
 ## Operation Mode
 When processing a diagram:
 1.  **Detect** preventatively the diagram type (`flowchart` vs `architecture-beta`).

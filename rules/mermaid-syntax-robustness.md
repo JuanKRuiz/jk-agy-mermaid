@@ -1,3 +1,8 @@
+---
+trigger: model_decision
+description: Apply this rule whenever validating, linting, healing, or fixing syntax in Mermaid diagrams, flowcharts, or architectures.
+---
+
 # Syntactic Robustness, Escaping, & Error Prevention Rule
 
 This directive establishes the immutable syntactic standards and pre-validation logic (Linter) that every Mermaid code generator or corrector in the plugin must apply to guarantee diagrams 100% free of compilation failures in the renderer.
@@ -24,6 +29,8 @@ Any generated or corrected Mermaid code block must be subjected to the following
 | **4** | **Unescaped Special Characters** <br>E.g., `node["A > B & C < D"]` | The `>`, `<`, `&`, and `/` characters are reserved tokens for connectors or HTML injection. | **String Standardization:** Translate to safe entities (`&amp;`, `&lt;`, `&gt;`) or force comilla-backtick wrapping. |
 | **5** | **Invalid or Mixed Connectors** <br>E.g., `--.-`, `-->|label|-->` | Line styles that do not belong to the Mermaid standard or spurious combinations of ELK layouts. | **Arrow Standardization:** Normalize exclusively to the 4 supported types:<br>- Standard solid: `-->`<br>- Thick solid: `==>`<br>- Dotted: `-.->`<br>- Invisible: `~~~` |
 | **6** | **Inline Icons in Labels** <br>E.g., `node["fa:user Label"]` or `node["`gcp:storage` <br> Label"]` | Breaks geometry, causes severe misalignment, or renders incorrectly as plain text. | **Conversion to Separate Declaration:** Extract the icon code from the label and declare the icon independently on a new line using native Mermaid syntax: `node@{ icon: "category:icon-name" }`. |
+| **7** | **Physical Connections between Waypoints** <br>E.g., `wpA_src --> wpA_dst` or `wp.*==>.*wp` | Waypoints are off-page teleporter ports. Drawing lines between them breaks graph decoupling and distorts layout. | **Decoupling Enforcement:** Remove the inter-waypoint connector completely, keeping the source and destination circular ports isolated. |
+
 
 ---
 

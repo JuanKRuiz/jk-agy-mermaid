@@ -1,3 +1,8 @@
+---
+trigger: model_decision
+description: Apply this rule whenever conceiving, designing, modifying, or styling Mermaid diagrams, architectures, flowcharts, or visual graphs.
+---
+
 # Professional Mermaid Diagram Style & Presentation Rule
 
 This directive establishes the mandatory aesthetic, contrast, and colorization standards for all diagrams in the workspace. Any agent or script that generates or edits Mermaid code must strictly adhere to these specifications.
@@ -86,18 +91,41 @@ It is **strictly forbidden** to apply style classes that define background color
 
 ## 4. Visual Waypoint (Teleporter) Design & Color Palette
 
-Visual teleportation waypoints must look consistent and professional. They are declared using triple parentheses (concentric circular shape) and a single uppercase letter or number (e.g., `wpA(((A))):::wp_blue`).
+Visual teleportation waypoints are **off-page connectors (teleporter ports)** designed to decouple dense clusters, separate architectural tiers (e.g. strategic upper tier vs. execution lower tier), and eliminate spaghetti cross-cluster connection lines.
 
-### Mandatory Color Palette for Waypoints:
-*   **Web / API / General Traffic (GCP Blue):**
+### 4.1. Golden Rule of Decoupling (ZERO Physical Cross-Cluster Edges)
+[!CRITICAL][!NON-NEGOTIABLE]
+*   **The Teleportation Principle:** A waypoint is an isolated off-page port, NOT an intermediate circle connected by lines.
+*   **STRICT PROHIBITION:** It is **STRONGLY FORBIDDEN** to draw a line, arrow, or connector between the source waypoint and destination waypoint (e.g., `wpA_src ==> wpA_dst` or `wpA_src --> wpA_dst` is **STRICTLY PROHIBITED**).
+*   **Why?** Drawing an edge between waypoints completely defeats the waypoint architecture, re-introduces cross-cluster compound edges between subgraphs, and forces Dagre/ELK to stretch ranks vertically with massive white space and visual distortion.
+*   **The Canonical Teleportation Pattern:**
+    ```mermaid
+    %% Upper Cluster: Point to exit port
+    source_node --> wpA_src(((A))):::wp_blue
+
+    %% Lower Cluster: Start from entry port (ZERO connection between wpA_src and wpA_dst!)
+    wpA_dst(((A))):::wp_blue --> dest_node
+    ```
+    *Notice that each cluster is solved independently by the layout engine, resulting in balanced, compact, and rectilinear diagrams.*
+
+### 4.2. Waypoint Diameter Optimization via Multi-Line Tokenization
+[!CRITICAL]
+*   **The Diameter Inflation Issue:** In Mermaid circular nodes `(((label)))`, circle diameter is calculated based on the widest single horizontal line of text. Placing text on a single line (e.g., `((("🛰️ Store Gate")))`) blows up the node into a huge balloon with vast dead space.
+*   **Mandatory Multi-Line Formatting:** Always split waypoint labels across multiple lines using `<br>` with a maximum of 1 short word per line (or single letters/numbers):
+    *   *Short Token:* `wpA_src(((A))):::wp_blue`
+    *   *Descriptive Token:* `wpStore_src((("🛰️<br>Store<br>Gate"))):::wp_green`
+
+### 4.3. Mandatory Color Palette for Waypoints
+Waypoints must look consistent, high-contrast, and bold:
+*   **Web / API / Strategic Mandate (GCP Blue):**
     `classDef wp_blue fill:#1A73E8,stroke:#0D47A1,stroke-width:2px,color:#fff,font-weight:bold;`
-*   **Security / VPN / Private Network (GCP Green):**
+*   **Security / Governance / Guardrails (GCP Green):**
     `classDef wp_green fill:#34A853,stroke:#1B5E20,stroke-width:2px,color:#fff,font-weight:bold;`
-*   **Authentication / Identity / IAM (GCP Yellow):**
+*   **Authentication / Delivery / Packaging (GCP Yellow):**
     `classDef wp_yellow fill:#FBBC04,stroke:#F29900,stroke-width:2px,color:#000,font-weight:bold;`
-*   **Alert / Failure / Return (GCP Red):**
+*   **Alert / PRR Gate / Escalation (GCP Red):**
     `classDef wp_red fill:#EA4335,stroke:#C5221F,stroke-width:2px,color:#fff,font-weight:bold;`
-*   **Data Layer / Persistence / AWS (AWS Squid / Dark):**
+*   **Data Layer / Persistence / Dark Tier (AWS Dark):**
     `classDef wp_dark fill:#232F3E,stroke:#000,stroke-width:2px,color:#fff,font-weight:bold;`
 
 ---

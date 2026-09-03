@@ -1,3 +1,8 @@
+---
+trigger: model_decision
+description: Apply this rule whenever orchestrating multi-agent diagramming, invoking mermaid subagents (linter, auditor, learner), or managing the diagram lifecycle.
+---
+
 # Agentic Orchestration Pipeline & Workflow Rule
 
 This directive defines the master workflow, agent matrix, and communication protocols for the autonomous lifecycle of Mermaid diagrams in the Google Antigravity environment. All agents (main orchestrator and specialized subagents) must strictly adhere to this pipeline for diagram creation, review, and continuous improvement.
