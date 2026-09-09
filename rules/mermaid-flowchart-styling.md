@@ -30,33 +30,49 @@ classDef neutral fill:#F1F3F4,stroke:#5F6368,stroke-width:2px,color:#000,font-fa
 
 ---
 
-## 2. Mandatory Header Configuration (YAML Frontmatter) & ELK Layout
+## 2. Mandatory Header Configuration (YAML Frontmatter) & Cloudtop-Side Rendering Standard
 
-Every Mermaid diagram generated or edited in this project **MUST** start with a header in **YAML Frontmatter** format (delimited by three hyphens `---` at the beginning and the end).
+[!CRITICAL][!NON-NEGOTIABLE]
+Every Mermaid diagram generated or edited in `.mmd` files **MUST** include the complete **YAML Frontmatter** header (`---` ... `---`) with `layout: elk` and `look: neo`. This configuration is the **Enterprise Gold Standard** for visual quality.
 
-*   **STRICT PROHIBITION:** It is **absolutely forbidden** to use the old Mermaid initialization syntax of style `%%{init: ...}%%` to define base configurations or theme variables (`themeVariables`).
-*   **DEFAULT LAYOUT:** The default spatial distribution and rendering engine **MUST** always be `elk` (`layout: elk`), as it guarantees order and clarity for complex architectures.
-*   **COMPLETE STANDARD CONFIGURATION:**
-    ```yaml
-    ---
-    config:
-      layout: elk
-      look: neo
-      theme: default
-    themeVariables:
-      fontFamily: 'Roboto, Google Sans, Helvetica, Arial, sans-serif'
-      primaryColor: '#4285F4'
-      secondaryColor: '#34A853'
-      tertiaryColor: '#FBBC04'
-      mainBkg: '#FFFFFF'
-      nodeBorder: '#4285F4'
-      clusterBkg: '#F8F9FA'
-      clusterBorder: '#DADCE0'
-      lineColor: '#5F6368'
-      edgeLabelBackground: '#ffffff'
-    ---
-    ```
-    *(The `edgeLabelBackground: '#ffffff'` variable is mandatory to inject a protective white background behind line connector labels).*
+### 2.1. Maximum Support Architecture: Cloudtop-Side Rendering & Auto-Padding (Recommended Default)
+To achieve 100% support for **ELK layout (`layout: elk`)**, **Neo look**, **custom `themeVariables`**, **Iconify vector icons**, and all diagram types (including `gantt` and `mindmap`), **DO NOT use Jetski's built-in Markdown parser as a Mermaid viewer**. Instead:
+1. **Write the complete `.mmd` file** with full YAML Frontmatter (`---` ... `---`).
+2. **Render and calibrate server-side on Cloudtop** into a 3x HiDPI PNG auto-padded for document/slide aspect ratio ($\frac{H}{W} \le 1.15$) using the plugin's self-contained pipeline:
+   ```bash
+   python3 ~/.gemini/config/plugins/jk-agy-mermaid/skills/mermaid-designer/scripts/render_pipeline.py <diagram.mmd>
+   ```
+   Or direct headless Node renderer:
+   ```bash
+   node ~/.gemini/config/plugins/jk-agy-mermaid/skills/mermaid-designer/scripts/render_native.js <diagram.mmd> [output.png]
+   ```
+3. **Display the pre-rendered graphic in Jetski** by copying `<basename>_padded.png` to `<appDataDir>/brain/<conversation-id>/` and embedding it via `![Caption](/absolute/path/to/image_padded.png)`.
+
+```yaml
+---
+config:
+  layout: elk
+  look: neo
+  theme: default
+themeVariables:
+  fontFamily: 'Roboto, Google Sans, Helvetica, Arial, sans-serif'
+  primaryColor: '#4285F4'
+  secondaryColor: '#34A853'
+  tertiaryColor: '#FBBC04'
+  mainBkg: '#FFFFFF'
+  nodeBorder: '#4285F4'
+  clusterBkg: '#F8F9FA'
+  clusterBorder: '#DADCE0'
+  lineColor: '#5F6368'
+  edgeLabelBackground: '#ffffff'
+---
+```
+
+### 2.2. Conditional Matrix: Jetski Native Inline Viewer vs. Cloudtop-Side Pre-Rendering
+The built-in Jetski Chat UI viewer only supports a limited subset of Mermaid syntax natively:
+*   **Natively Supported Diagram Types in Jetski Inline Viewer**: `flowchart`/`graph`, `stateDiagram-v2`, `sequenceDiagram`, `classDiagram`, `erDiagram`, `xychart-beta`.
+*   **Natively UNSUPPORTED in Jetski Inline Viewer**: YAML Frontmatter (`---`), `%%{init:...}%%`, ELK layout engine, offline Iconify vector icons, `gantt`, and `mindmap`.
+*   **Rule for Inline ` ```mermaid ` Code Blocks**: If (and only if) you output raw Mermaid code directly inside a Chat UI ` ```mermaid ` block for quick inline preview, you must omit the `---` YAML frontmatter block so line 1 starts directly with the supported diagram keyword (`flowchart TD`, `sequenceDiagram`, etc.). For maximum visual fidelity, always prefer Cloudtop-side pre-rendering.
 
 ---
 
@@ -203,3 +219,81 @@ To ensure consistency, portability, and reliable rendering within the offline ex
 ### C. Complexity Reduction with Waypoints & Junction Buses
 *   **Waypoints (Teleporters):** If connection arrows traverse multiple subgraphs or cross more than 4 times, replace the long spaghetti arrow with a local circular concentric port at both source and destination (e.g., `wpA(((A))):::wp_blue`). Use matching waypoint style classes (`:::wp_blue`, `:::wp_green`, etc.) to denote the common logical link.
 *   **Junction Bus Pattern:** Group parallel connections going to a single subgraph into a single entrance `junction` gateway node inside that subgraph to avoid overlapping lines and clutter.
+
+---
+
+## 8. Document & Mobile Layout Optimization (Stacked Multi-Row Default vs. User Variants)
+[!CRITICAL][!NON-NEGOTIABLE]
+
+When generating or rendering Mermaid architectural flowcharts intended to be embedded in **Google Docs (Letter/Legal portrait pages)**, **PDF reports**, **Google Slides**, or viewed on **mobile devices**, extreme aspect ratios ruin legibility:
+*   **The Horizontal Trap (`LR`):** Pure left-to-right panoramas (`4000+ px` wide) shrink into microscopic, unreadable strips when scaled down to fit portrait document margins (630pt – 790pt width).
+*   **The Vertical Trap (`TD`):** Pure single-column vertical towers (`5000+ px` tall) span across multiple page breaks, losing visual continuity.
+
+### 8.1. Mandatory Default for Documents: Stacked Multi-Row Layout (Balanced Aspect Ratio)
+By default, for any document or executive deliverable, you MUST structure multi-stage architectures into **2 to 3 stacked horizontal rows** connected via **Teleporter Waypoints** (`(((Gate)))`) and ordered vertically using invisible links (`~~~`):
+
+1.  **Row 1 (Side-by-Side Context & Runtime):** Group initial stages (e.g., `1. Endpoint Perimeter` and `2. Antigravity Runtime`) inside an invisible wrapper subgraph (`style ROW1 fill:none,stroke:none`) with `direction LR` so they sit side-by-side at the top. Terminate the row at an exit Waypoint (`wpGov_src`).
+2.  **Row 2 (Central Control / Governance Pipeline):** Place the core processing or governance pipeline (`3. Admin Console / Security Gateways`) directly below Row 1 using `ROW1 ~~~ SG_Row2`. Configure `direction LR` inside this subgraph, starting from the matching entry Waypoint (`wpGov_dst`) and ending at the next exit Waypoint (`wpColab_src`).
+3.  **Row 3 (Destination / Data Sovereignty Layer):** Place the final tier (`4. Data / VPC Isolation`) below Row 2 using `SG_Row2 ~~~ SG_Row3` with `direction LR`, starting from entry Waypoint (`wpColab_dst`).
+
+**Canonical Stacked Multi-Row Pattern:**
+```mermaid
+flowchart TD
+    subgraph ROW1 [" "]
+        direction LR
+        subgraph SG_1 ["1. Stage One"]
+            direction LR
+            A --> B
+        end
+        subgraph SG_2 ["2. Stage Two"]
+            direction TB
+            B ==> C
+            C ==> wp1_src((("🛡️<br>Gate<br>1"))):::wp_blue
+        end
+    end
+
+    %% Force Vertical Stack Ordering: Row 1 -> Row 2
+    ROW1 ~~~ SG_3
+
+    subgraph SG_3 ["3. Central Governance & Pipeline (Row 2)"]
+        direction LR
+        wp1_dst((("🛡️<br>Gate<br>1"))):::wp_blue ==> D --> E --> wp2_src((("🔒<br>Gate<br>2"))):::wp_green
+    end
+
+    %% Force Vertical Stack Ordering: Row 2 -> Row 3
+    SG_3 ~~~ SG_4
+
+    subgraph SG_4 ["4. Target Sovereign Layer (Row 3)"]
+        direction LR
+        wp2_dst((("🔒<br>Gate<br>2"))):::wp_green ==> F --> G
+    end
+
+    style ROW1 fill:none,stroke:none
+```
+
+### 8.2. Support for Explicit User Variants (Horizontal or Ultra-Vertical)
+While the **Stacked Multi-Row Layout** is the mandatory default for documents and mobile readability, you MUST respect explicit user requests for alternative aspect ratios:
+*   **Horizontal Variant (`flowchart LR`):** If the user explicitly requests a wide horizontal banner (e.g., for wide widescreen canvas or specific panoramic slides), chain all subgraphs horizontally (`SG_1 ~~~ SG_2 ~~~ SG_3`).
+*   **Ultra-Vertical Variant (`flowchart TD` single column):** If the user explicitly requests a deep vertical stack for narrow sidebars or step-by-step scrolling guides, stack each subgraph vertically without horizontal row wrappers.
+
+### 8.3. Calibración Mecánica de Aspect Ratio y Auto-Padding ($\frac{H}{W} \le 1.15$)
+[!CRITICAL]
+Para diagramas que se insertan en Google Docs (lienzo Pageless o estándar), diapositivas o PDFs ejecutivos:
+* **Umbral Crítico de Ratio:** El ratio vertical $\frac{H}{W}$ no debe superar jamás **1.15** para evitar desbordes de página o reducción excesiva de legibilidad.
+* **Auto-Padding con Lienzo Blanco (`#FFFFFF`):** Si un diagrama arquitectónico resultante excede el umbral ($\frac{H}{W} > 1.15$), el pipeline automatizado `render_pipeline.py` (o `pad_diagram.py`) expande simétricamente los márgenes horizontales con `#FFFFFF` hasta satisfacer $\frac{H}{W} \le 1.15$. Si ya es conforme, añade un margen sutil de respiración (3%) para evitar que los bordes de los nodos toquen los extremos.
+* **Nomenclatura Canónica:** El asset final calibrado debe guardarse siempre con el sufijo `_padded.png` (ej. `00_lab_complete_workflow_padded.png`), el cual se vincula en los playbooks y documentos maestros.
+
+---
+
+## 9. Ley de Dagre para Enlaces Invisibles (`~~~`) y Grillas Simétricas Multicolumna
+[!CRITICAL]
+* **Comportamiento Real de `~~~`:** En Mermaid `flowchart TD`, la sintaxis `A ~~~ B` NO alinea horizontalmente. Es una arista dirigida hacia abajo con grosor cero (`stroke-width: 0`) que impone la restricción:
+  `rank(B) >= rank(A) + 1`
+* **Invariante de Grillas Simétricas de 2 o Más Columnas:**
+  Para ubicar dos subgrafos paralelos debajo de una etapa superior común sin desfases verticales asimétricos:
+  1. **Acoplamiento Dual de Waypoints Superiores:** Conectar ambos waypoints de entrada inferiores desde el puerto de salida de la etapa superior (`wp_exit ~~~ wp_left_entry` y `wp_exit ~~~ wp_right_entry`).
+  2. **Fijación de Rangos Horizontales (Rank-Pinning):** Forzar el alineamiento horizontal conectando nodos homólogos de ambas columnas mediante enlaces invisibles `~~~` (`Node_L1 ~~~ Node_R1`, `Node_L2 ~~~ Node_R2`).
+  3. **Centrado del Hito Final:** Centrar el pie de página o nodo de éxito final acoplando invisiblemente el puerto inferior izquierdo (`wp_left_exit ~~~ Success_Node`) mientras se dibuja la arista real desde la columna derecha (`Node_R_Final ==> Success_Node`).
+
+
+

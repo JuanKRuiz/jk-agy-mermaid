@@ -1,0 +1,1 @@
+../skills/mermaid-designer/scripts/pad_diagram.py

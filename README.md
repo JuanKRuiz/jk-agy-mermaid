@@ -73,10 +73,22 @@ The plugin features a lightning-fast Python CLI search tool. You can search for 
 python3 skills/mermaid-designer/scripts/query_icons.py --batch "load balancer" "entra id" "gcp:vertexai" "database"
 ```
 
-### 3. Example Prompt for your Agent
+### 3. Native Cloudtop 3x HiDPI Rendering & Aspect Ratio Pipeline
+The plugin includes a self-contained rendering engine using headless Google Chrome (Puppeteer), local Mermaid.js, and offline Iconify vector packs (`gcp`, `logos`, `material-symbols`, `fa6-solid`, `mdi`, `carbon`, `aws`, `azure`), with automatic aspect ratio white padding ($\frac{H}{W} \le 1.15$):
+
+```bash
+# Render diagram to 3x HiDPI PNG and auto-pad for documents/slides
+python3 skills/mermaid-designer/scripts/render_pipeline.py diagram.mmd
+
+# Batch process all diagrams in a directory
+python3 skills/mermaid-designer/scripts/render_pipeline.py path/to/diagrams/
+```
+
+### 4. Example Prompt for your Agent
 Once installed, your Antigravity agent becomes a Master Designer. You can prompt it with detailed instructions, and it will output standard, production-ready diagrams:
 
 > *"Design me a TD diagram with subgraphs showing a mobile client connecting through a Load Balancer to an App Engine, and finally saving data to BigQuery. Make sure to use official icons and follow the GCP-First palette."*
+
 
 ---
 

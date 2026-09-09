@@ -1,0 +1,1 @@
+../skills/mermaid-designer/scripts/render_native.js

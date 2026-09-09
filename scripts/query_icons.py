@@ -1,0 +1,1 @@
+../skills/mermaid-designer/scripts/query_icons.py

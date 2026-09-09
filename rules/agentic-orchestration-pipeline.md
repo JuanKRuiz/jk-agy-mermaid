@@ -134,8 +134,14 @@ flowchart TD
 4.  **Aesthetic & Icon Audit (Auditor subagent - Step 6):**
     *   The Main Agent invokes `mermaid-auditor` to perform final validation.
     *   The auditor verifies Zero-Style rule compliance, guarantees explicit styling for ALL subgraphs (strictly no default yellow), and verifies that absolutely no unregistered or blacklisted icons render.
-5.  **Sibling Export & Delivery (Main Agent):**
+5.  **Sibling Export, Native 3x HiDPI Rendering & Delivery (Main Agent):**
     *   Writes final code block to a separate sibling file (`filename_improved.mmd` or `filename_optimized.mmd`) to preserve original files intact.
+    *   Executes the Cloudtop native rendering and auto-padding pipeline:
+        ```bash
+        python3 ~/.gemini/config/plugins/jk-agy-mermaid/skills/mermaid-designer/scripts/render_pipeline.py filename_improved.mmd
+        ```
+        Generates both the raw 3x HiDPI asset (`filename_improved.png`) and the aspect-ratio-calibrated asset (`filename_improved_padded.png`, $\frac{H}{W} \le 1.15$).
+    *   Mirrors the padded asset to the active Jetski conversation brain directory (`<appDataDir>/brain/<conversation-id>/`) and presents it to the user embedded via `![Caption](/absolute/path/to/image_padded.png)`.
 
 ---
 
