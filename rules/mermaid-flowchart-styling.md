@@ -295,5 +295,67 @@ Para diagramas que se insertan en Google Docs (lienzo Pageless o estándar), dia
   2. **Fijación de Rangos Horizontales (Rank-Pinning):** Forzar el alineamiento horizontal conectando nodos homólogos de ambas columnas mediante enlaces invisibles `~~~` (`Node_L1 ~~~ Node_R1`, `Node_L2 ~~~ Node_R2`).
   3. **Centrado del Hito Final:** Centrar el pie de página o nodo de éxito final acoplando invisiblemente el puerto inferior izquierdo (`wp_left_exit ~~~ Success_Node`) mientras se dibuja la arista real desde la columna derecha (`Node_R_Final ==> Success_Node`).
 
+---
+
+## 10. Nodos Ancla y Conectores de Referencia Numerados
+
+Estas dos técnicas cubren casos que los Waypoints (§4) no resuelven. Los Waypoints desacoplan **entre clusters**; lo de abajo opera **dentro** de un mismo cluster.
+
+### 10.1. Nodos Ancla para Rutas en L (Conexiones No Lineales)
+
+* **Problema:** el motor de layout traza la ruta más corta entre origen y destino. Cuando se necesita una ruta escalonada o en L deliberada (para bordear un cluster o evitar que una arista cruce por encima de nodos), no hay forma declarativa de imponerla.
+
+* **Técnica:** insertar nodos ancla invisibles como puntos de paso intermedios.
+
+  1. **Declarar las anclas:** `anchor1@{ shape: anchor}` — la shape `anchor` no dibuja nada, solo ocupa una posición de layout.
+
+  2. **Construir la ruta:** encadenar origen → anclas → destino en secuencia.
+
+  3. **Diferenciar la ruta:** usar línea punteada (`-.->` o `-.-`) para que el lector distinga un enrutamiento deliberado de una relación lógica directa.
+
+```mermaid
+%% Conexión escalonada de A hacia D
+A --> anchor1
+anchor1 -.- anchor2
+anchor2 -.-> D
+
+%% Definición de anclas invisibles
+anchor1@{ shape: anchor}
+anchor2@{ shape: anchor}
+```
+
+* **Cuándo NO usarla:** si el cruce ocurre entre subgrafos distintos, la solución correcta es un Waypoint (§4.1), no una cadena de anclas. Las anclas añaden nodos al grafo y por tanto influyen en el cálculo de rangos.
+
+### 10.2. Conectores de Referencia Numerados (Hub Compartido)
+
+* **Problema:** cuando muchos nodos convergen sobre un mismo servicio central (un Active Directory, un bus de eventos, un IdP), trazar líneas directas desde cada origen genera una maraña que destruye la legibilidad.
+
+* **Técnica:** reemplazar las líneas largas por pares de círculos numerados idénticos que actúan como referencia visual.
+
+  1. **Definir el estilo:** `classDef connector fill:#9c27b0,stroke:#7b1fa2,stroke-width:2px,color:#fff`
+
+  2. **Crear los pares:** en origen y destino, nodos circulares con el mismo número (`conn1_iap((1)):::connector` y `conn1_ad((1)):::connector`).
+
+  3. **Enlazar corto:** trazar conexiones cortas desde cada servicio real hacia su conector.
+
+```mermaid
+classDef connector fill:#9c27b0,stroke:#7b1fa2,stroke-width:2px,color:#fff
+
+subgraph "Origen"
+    IAP[Identity-Aware Proxy]
+    conn1_iap((1)):::connector
+end
+
+subgraph "Destino"
+    ManagedAD[Managed Microsoft AD]
+    conn1_ad((1)):::connector
+end
+
+IAP -- Auth --> conn1_iap
+conn1_ad --> ManagedAD
+```
+
+* **Relación con los Waypoints:** un conector numerado es un Waypoint especializado para el patrón **muchos-a-uno**. Aplica la misma Regla de Oro de §4.1: **jamás dibujar una arista entre `conn1_iap` y `conn1_ad`**. La numeración es el vínculo; la línea lo destruiría.
+
 
 
