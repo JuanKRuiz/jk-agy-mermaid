@@ -74,6 +74,29 @@ The built-in Jetski Chat UI viewer only supports a limited subset of Mermaid syn
 *   **Natively UNSUPPORTED in Jetski Inline Viewer**: YAML Frontmatter (`---`), `%%{init:...}%%`, ELK layout engine, offline Iconify vector icons, `gantt`, and `mindmap`.
 *   **Rule for Inline ` ```mermaid ` Code Blocks**: If (and only if) you output raw Mermaid code directly inside a Chat UI ` ```mermaid ` block for quick inline preview, you must omit the `---` YAML frontmatter block so line 1 starts directly with the supported diagram keyword (`flowchart TD`, `sequenceDiagram`, etc.). For maximum visual fidelity, always prefer Cloudtop-side pre-rendering.
 
+### 2.3. Strict Prohibition of `gantt` in Chat Code Blocks
+[!CRITICAL][!NON-NEGOTIABLE]
+
+It is **STRICTLY FORBIDDEN** to emit a ` ```mermaid ` block whose first keyword is
+`gantt`. The Jetski conversational UI rejects it with a hard client error:
+
+```text
+Invalid mermaid header: "gantt". Supported types: flowchart/graph,
+stateDiagram-v2, sequenceDiagram, classDiagram, erDiagram, xychart-beta
+```
+
+Every Gantt chart — and in general every complex architectural diagram carrying
+iconography — **MUST** be rendered server-side to PNG via `mmdc` into the artifact
+directory and embedded by absolute path:
+
+```markdown
+![caption](/absolute/path/to/<appDataDir>/brain/<conversation-id>/<name>.png)
+```
+
+For schedules and roadmaps that do not justify a render, fall back to a directed
+`flowchart LR` or a plain Markdown table.
+
+
 ---
 
 ## 3. "Zero-Style" Rule for AWS, Azure, Logos, and Excluded GCP (Icons as Brands)
