@@ -96,6 +96,33 @@ directory and embedded by absolute path:
 For schedules and roadmaps that do not justify a render, fall back to a directed
 `flowchart LR` or a plain Markdown table.
 
+### 2.4. Target-Aware Snippet & Fragment Handling (Chat UI vs. External Tools)
+[!CRITICAL][!NON-NEGOTIABLE]
+
+External IDEs, editors (VS Code, Obsidian, Notion, GitHub Markdown), and CLI renderers (`mmdc`, Puppeteer) support syntax highlighting, frontmatter, and relaxed parsing for Mermaid code. **Never strip or degrade Mermaid features from source files (`.mmd`), external documentation, or repository deliverables**.
+
+However, the **Jetski Conversational Chat UI** enforces an immediate, strict client-side parser: it treats **every** fenced block tagged ` ```mermaid ` as an executable, standalone SVG diagram. If the first non-empty line is not one of the 6 supported diagram headers (`flowchart`, `graph`, `sequenceDiagram`, `classDiagram`, `stateDiagram-v2`, `erDiagram`, `xychart-beta`), the UI crashes with the hard client error:
+
+```text
+⚠️ Failed to render Mermaid diagram: Invalid mermaid header: "<first line>". Expected "graph TD", "flowchart LR", "stateDiagram-v2", etc.. Supported types: flowchart/graph, stateDiagram-v2, sequenceDiagram, classDiagram, erDiagram, xychart-beta.
+```
+
+**Channel Boundary & Dual-Target Protocol:**
+
+1. **Target A: Standalone Files & Deliverables (`.mmd`, repository docs, Markdown targeting external IDEs/CI):**
+   * Maintain 100% of Mermaid features: YAML frontmatter (`---`), ELK layout, Neo look, advanced diagram types (`gantt`, `mindmap`, `architecture-beta`), and custom styling.
+   * Full capability preservation is mandatory; never downgrade source files to satisfy chat UI limitations.
+
+2. **Target B: Conversational Chat UI Output (Direct Chat Bubbles):**
+   * **Visual Previews:** If you intend for a node, connection, or sub-flow to render visually as an interactive diagram in the chat, you **MUST** wrap it in a minimal valid container (e.g., `flowchart TD` or `flowchart LR`):
+     ```text
+     ```mermaid
+     flowchart TD
+         id["`**Component Name**`"]
+     ```
+     ```
+   * **Syntax Explanations & Pedagogical Snippets:** If you are illustrating syntax, teaching a formatting pattern, or displaying a diff/fragment for reading (not visual rendering), you **MUST** fence the snippet with ` ```text `, ` ```markdown `, or ` ```txt `. This displays the raw code with clean monospaced formatting while completely preventing the chat UI renderer from crashing.
+
 
 ---
 

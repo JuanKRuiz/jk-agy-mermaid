@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 - 🛡️ **True Teleporter Waypoints Governance:** Formalized the True Teleporter Waypoint standard across `mermaid-flowchart-styling.md`, `mermaid-syntax-robustness.md`, `skills/mermaid-designer/SKILL.md`, `mermaid-linter-fixer.md`, and `mermaid-auditor.md`. Mandated zero physical cross-cluster connecting lines between waypoints to guarantee decoupled layout and compact geometry. Enforced multi-line tokenization (`<br>`) to optimize circle diameter.
 - ⚡ **Auto-Activation YAML Frontmatter:** Injected standard Jetski/Antigravity `trigger: model_decision` YAML frontmatter headers with descriptive triggers across all plugin rule files (`mermaid-flowchart-styling.md`, `mermaid-syntax-robustness.md`, `agentic-orchestration-pipeline.md`, `mermaid-learning-loop.md`), ensuring automatic discovery and progressive disclosure by the model in system prompts.
+- 🛡️ **Target-Aware Snippet Handling & Header Discrimination:** Formalized Section 2.4 in `rules/mermaid-flowchart-styling.md`, Rule 8 & Section 4 in `rules/mermaid-syntax-robustness.md`, and Rule 7 in `agents/mermaid-linter-fixer.md`. Establishes strict channel discrimination between standalone files (`.mmd`, repository docs, where 100% of advanced features, YAML frontmatter, and extended diagrams are preserved) and the Jetski Conversational Chat UI (where syntax snippets for reading must be fenced with ` ```text ` or wrapped in minimal valid diagram headers, eliminating client-side header parsing crashes).
 
 
 ### Fixed

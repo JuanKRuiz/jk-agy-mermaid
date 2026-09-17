@@ -30,6 +30,7 @@ Any generated or corrected Mermaid code block must be subjected to the following
 | **5** | **Invalid or Mixed Connectors** <br>E.g., `--.-`, `-->|label|-->` | Line styles that do not belong to the Mermaid standard or spurious combinations of ELK layouts. | **Arrow Standardization:** Normalize exclusively to the 4 supported types:<br>- Standard solid: `-->`<br>- Thick solid: `==>`<br>- Dotted: `-.->`<br>- Invisible: `~~~` |
 | **6** | **Inline Icons in Labels** <br>E.g., `node["fa:user Label"]` or `node["`gcp:storage` <br> Label"]` | Breaks geometry, causes severe misalignment, or renders incorrectly as plain text. | **Conversion to Separate Declaration:** Extract the icon code from the label and declare the icon independently on a new line using native Mermaid syntax: `node@{ icon: "category:icon-name" }`. |
 | **7** | **Physical Connections between Waypoints** <br>E.g., `wpA_src --> wpA_dst` or `wp.*==>.*wp` | Waypoints are off-page teleporter ports. Drawing lines between them breaks graph decoupling and distorts layout. | **Decoupling Enforcement:** Remove the inter-waypoint connector completely, keeping the source and destination circular ports isolated. |
+| **8** | **Missing Diagram Header in Chat Blocks** <br>E.g., `id["Label"]` or `---` on line 1 | The conversational Chat UI parser requires a valid header on line 1 of any ` ```mermaid ` block. | **Target Discrimination:** In chat dialog, wrap visual snippets in a minimal `flowchart TD` or use ` ```text ` for syntax code reading. Never degrade or strip features from `.mmd` source files. |
 
 
 ---
@@ -56,3 +57,16 @@ To avoid visual distortion, box overlapping, and broken borders in the ELK layou
     ```
     And at the end of the file, hide the line so it doesn't render visually:
     `linkStyle INDEX stroke-width:0px,fill:none`
+
+---
+
+## 4. Target Channel Discrimination (Chat Dialog vs. Standalone Files)
+
+When validating, emitting, or correcting Mermaid code:
+1.  **Standalone Deliverables & Source Files (`.mmd`, repository docs, Markdown targeting external IDEs/CI):**
+    *   Preserve 100% of advanced specifications: YAML frontmatter (`---`), ELK layout, Neo look, `architecture-beta`, `gantt`, `mindmap`, and custom styling.
+    *   **Strict Preservation Rule:** Never strip, alter, or downgrade valid features from source files to satisfy chat UI constraints. External IDEs, CLI pipelines (`render_pipeline.py`), and GitHub render them fully.
+2.  **Conversational Chat UI Blocks (` ```mermaid ` in interactive dialog):**
+    *   The Jetski Chat UI renderer strictly requires a supported header (`flowchart`, `graph`, `sequenceDiagram`, `classDiagram`, `stateDiagram-v2`, `erDiagram`, `xychart-beta`) on line 1.
+    *   **Visual Snippets:** If visual preview in the chat bubble is intended, wrap in a minimal valid header (e.g. `flowchart TD`).
+    *   **Syntax Excerpts & Explanations:** If illustrating syntax for reading, fence with ` ```text `, ` ```markdown `, or ` ```txt ` to display clean code without crashing the chat UI parser.

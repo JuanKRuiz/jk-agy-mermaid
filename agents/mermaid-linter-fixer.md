@@ -45,6 +45,10 @@ If you are invoked to assist with an already existing or pre-created Mermaid dia
     1.  Sever and delete the connecting line completely.
     2.  Maintain the source circular waypoint (`source --> wpA_src(((A))):::wp_blue`) and destination circular waypoint (`wpA_dst(((A))):::wp_blue --> dest`) isolated as independent teleporter ports to guarantee cluster decoupling.
 
+### 7. Target-Aware Channel Discrimination
+*   **For `.mmd` files / standalone deliverables:** Preserve 100% of advanced specifications: YAML frontmatter (`---`), ELK layout, Neo look, `architecture-beta`, `gantt`, `mindmap`. Never strip valid features from source files.
+*   **For conversational chat outputs:** Ensure every ` ```mermaid ` block starts with a supported header (`flowchart`, `graph`, `sequenceDiagram`, `classDiagram`, `stateDiagram-v2`, `erDiagram`, `xychart-beta`). If emitting an isolated snippet or syntax excerpt for reading, fence it with ` ```text ` instead.
+
 ## Operation Mode
 When processing a diagram:
 1.  **Detect** preventatively the diagram type (`flowchart` vs `architecture-beta`).
